@@ -20,15 +20,56 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListPageState extends State<ProductListPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: _buildAppBar(),
       body: Column(
         children: [
           _buildSortFilterRow(context),
           Expanded(child: _buildFavouritesProductGrid()),
         ],
+      ),
+      endDrawer: SafeArea(
+        child: Drawer(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 16.h, left: 21.w, right: 15.w, bottom: 32.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Filter',
+                      style: textMedium,
+                    ),
+                    Text(
+                      'Done',
+                      style: textMedium.copyWith(color: AppColor.neonPink),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
+                title: Text(
+                  'Categories',
+                  style: textRegular,
+                ),
+                trailing: Text("Any"),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer
+                  // Navigate to home page or perform other actions
+                },
+              ),
+              Divider()
+              // Add more items here
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -93,9 +134,14 @@ class _ProductListPageState extends State<ProductListPage> {
 
   Widget _buildFilterButton() {
     return Expanded(
-      child: _buildButton(
-        'assets/image/Filter.png',
-        'Filter',
+      child: InkWell(
+        onTap: () {
+          _scaffoldKey.currentState?.openEndDrawer();
+        },
+        child: _buildButton(
+          'assets/image/Filter.png',
+          'Filter',
+        ),
       ),
     );
   }
@@ -134,12 +180,45 @@ class _ProductListPageState extends State<ProductListPage> {
                 'Recent Products',
                 style: textMedium.copyWith(fontSize: 18.spMin),
               ),
-              SizedBox(height: 10.h),
               Row(
                 children: [
                   _buildSortOption("Newest to Oldest"),
                   SizedBox(width: 10.w),
                   _buildSortOption("Oldest to Newest"),
+                ],
+              ),
+              Text(
+                'Rating',
+                style: textMedium.copyWith(fontSize: 18.spMin),
+              ),
+              Row(
+                children: [
+                  _buildSortOption("High to Low"),
+                  SizedBox(width: 10.w),
+                  _buildSortOption("OLow to High"),
+                ],
+              ),
+              Text(
+                'Price',
+                style: textMedium.copyWith(fontSize: 18.spMin),
+              ),
+              Row(
+                children: [
+                  _buildSortOption("High to Low"),
+                  SizedBox(width: 10.w),
+                  _buildSortOption("OLow to High"),
+                ],
+              ),
+              Text(
+                'Offers',
+                style: textMedium.copyWith(fontSize: 18.spMin),
+              ),
+              SizedBox(height: 10.h),
+              Row(
+                children: [
+                  _buildSortOption("High to Low"),
+                  SizedBox(width: 10.w),
+                  _buildSortOption("OLow to High"),
                 ],
               ),
             ],
@@ -152,10 +231,11 @@ class _ProductListPageState extends State<ProductListPage> {
   Widget _buildSortOption(String text) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 15.w),
+      margin: EdgeInsets.only(top: 10.h, bottom: 18.h),
       decoration: BoxDecoration(
-        color: AppColor.white,
-        border: Border.all(width: 1.r),
-      ),
+          color: AppColor.white,
+          border: Border.all(width: 1.r, color: AppColor.grey),
+          borderRadius: BorderRadius.circular(4.r)),
       child: Text(
         text,
         style: textRegular,
