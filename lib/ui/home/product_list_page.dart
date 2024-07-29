@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:trendify/data/model/response/categories.dart';
 import 'package:trendify/generated/assets.dart';
-import 'package:trendify/generated/l10n.dart';
 import 'package:trendify/router/app_router.dart';
 import 'package:trendify/ui/auth/store/auth_store.dart';
 import 'package:trendify/ui/home/home_page.dart';
@@ -21,57 +19,181 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Map<String, List<Map<String, String>>> filterMenuMap = {
+    'Categories': [
+      {'Type': 'Type A', 'Description': 'Description for Type A'},
+      {'Type': 'Type B', 'Description': 'Description for Type B'},
+    ],
+    'Subcategories': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+    'Brand': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+    'Size': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+    'Color': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+    'Price Range': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+    'Offer Range': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+    'Delivery Type': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+    'Store Location': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+    'Condition': [
+      {'Type': 'Type C', 'Description': 'Description for Type C'},
+      {'Type': 'Type D', 'Description': 'Description for Type D'},
+    ],
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          _buildSortFilterRow(context),
-          Expanded(child: _buildFavouritesProductGrid()),
-        ],
-      ),
-      endDrawer: SafeArea(
-        child: Drawer(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: 16.h, left: 21.w, right: 15.w, bottom: 32.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Filter',
-                      style: textMedium,
-                    ),
-                    Text(
-                      'Done',
-                      style: textMedium.copyWith(color: AppColor.neonPink),
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
-                title: Text(
-                  'Categories',
-                  style: textRegular,
-                ),
-                trailing: Text("Any"),
-                onTap: () {
-                  Navigator.pop(context); // Close the drawer
-                  // Navigate to home page or perform other actions
-                },
-              ),
-              Divider()
-              // Add more items here
-            ],
-          ),
+        key: _scaffoldKey,
+        appBar: _buildAppBar(),
+        body: Column(
+          children: [
+            _buildSortFilterRow(context),
+            Expanded(child: _buildFavouritesProductGrid()),
+          ],
         ),
-      ),
-    );
+        endDrawer: Drawer(
+          child: Navigator(
+            onGenerateRoute: (settings) {
+              return MaterialPageRoute(
+                builder: (context) => Scaffold(
+                  backgroundColor: AppColor.white,
+                  appBar: AppBar(
+                    excludeHeaderSemantics: false,
+                    shadowColor: AppColor.white,
+                    backgroundColor: AppColor.white,
+                    elevation: 0,
+                    title: Text(
+                      "Filter",
+                      style: textMedium.copyWith(color: AppColor.black),
+                    ),
+                    actions: [
+                      GestureDetector(
+                          onTap: () {},
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(top: 15, right: 15).r,
+                            child: Text(
+                              'Done',
+                              textAlign: TextAlign.center,
+                              style:
+                                  textMedium.copyWith(color: AppColor.neonPink),
+                            ),
+                          )),
+                    ],
+                  ),
+                  body: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Column(
+                            children: List.generate(
+                          filterMenuMap.length,
+                          (index) => Column(
+                            children: [
+                              ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 15.w, vertical: 0),
+                                title: Text(
+                                  "${filterMenuMap['Category']?[index]}",
+                                  style: textRegular.copyWith(
+                                      color: AppColor.black),
+                                ),
+                                trailing: Text(
+                                  "Any",
+                                  style: textRegular.copyWith(
+                                      color: AppColor.grey),
+                                ),
+                                onTap: () {},
+                              ),
+                              Divider(
+                                color: AppColor.black,
+                              ),
+                            ],
+                          ),
+                        )),
+                        // Add more items here
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        )
+        // Drawer(
+        //   child: SingleChildScrollView(
+        //     child: Column(
+        //       children: [
+        //         Padding(
+        //           padding: EdgeInsets.only(
+        //               top: 16.h, left: 21.w, right: 15.w, bottom: 32.h),
+        //           child: Row(
+        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //             children: [
+        //               Text(
+        //                 'Filter',
+        //                 style: textMedium,
+        //               ),
+        //               Text(
+        //                 'Done',
+        //                 style: textMedium.copyWith(color: AppColor.neonPink),
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //         Column(
+        //             children: List.generate(
+        //           filterMenuList.length,
+        //           (index) => Column(
+        //             children: [
+        //               ListTile(
+        //                 contentPadding:
+        //                     EdgeInsets.symmetric(horizontal: 15.w, vertical: 0),
+        //                 title: Text(
+        //                   "${filtbuildMainDrawerContenterMenuList[index]['Category']}",
+        //                   style: textRegular.copyWith(color: AppColor.black),
+        //                 ),
+        //                 trailing: Text(
+        //                   "${filterMenuList[index]['Type']}",
+        //                   style: textRegular.copyWith(color: AppColor.grey),
+        //                 ),
+        //                 onTap: () {},
+        //               ),
+        //               Divider(
+        //                 color: AppColor.black,
+        //               ),
+        //             ],
+        //           ),
+        //         )),
+
+        //         // Add more items here
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        );
   }
 
   AppBar _buildAppBar() {
@@ -424,4 +546,155 @@ Widget _buildPriceAndCart() {
       SvgPicture.asset(Assets.imageAddTocart),
     ],
   );
+}
+
+Widget buildMainDrawerContent(BuildContext context) {
+  final filterMenuList = [
+    {'Category': 'Category 1', 'Type': 'Type A'},
+    {'Category': 'Category 2', 'Type': 'Type B'},
+    {'Category': 'Category 3', 'Type': 'Type C'},
+  ];
+
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        Padding(
+          padding:
+              EdgeInsets.only(top: 16.h, left: 21.w, right: 15.w, bottom: 32.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Filter',
+                style: TextStyle(fontSize: 18.sp), // Replace with textMedium
+              ),
+              Text(
+                'Done',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  color: Colors.pink, // Replace with AppColor.neonPink
+                ),
+              ),
+            ],
+          ),
+        ),
+        Column(
+          children: List.generate(
+            filterMenuList.length,
+            (index) => Column(
+              children: [
+                ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 15.w, vertical: 0),
+                  title: Text(
+                    "${filterMenuList[index]['Category']}",
+                    style: TextStyle(
+                      fontSize: 16.sp, // Replace with textRegular
+                      color: Colors.black, // Replace with AppColor.black
+                    ),
+                  ),
+                  trailing: Text(
+                    "${filterMenuList[index]['Type']}",
+                    style: TextStyle(
+                      fontSize: 16.sp, // Replace with textRegular
+                      color: Colors.grey, // Replace with AppColor.grey
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/nestedroute');
+                  },
+                ),
+                Divider(
+                  color: Colors.black, // Replace with AppColor.black
+                ),
+              ],
+            ),
+          ),
+        ),
+        // Add more items here
+      ],
+    ),
+  );
+}
+
+Widget buildNestedDrawerContent(BuildContext context) {
+  final filterMenuList = [
+    {'Category': 'Category 1', 'Type': 'Type A'},
+    {'Category': 'Category 2', 'Type': 'Type B'},
+  ];
+
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        Padding(
+          padding:
+              EdgeInsets.only(top: 16.h, left: 21.w, right: 15.w, bottom: 32.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Filter',
+                style: TextStyle(fontSize: 18.sp), // Replace with textMedium
+              ),
+              Text(
+                'Done',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  color: Colors.pink, // Replace with AppColor.neonPink
+                ),
+              ),
+            ],
+          ),
+        ),
+        Column(
+          children: List.generate(
+            filterMenuList.length,
+            (index) => Column(
+              children: [
+                ListTile(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 15.w, vertical: 0),
+                  title: Text(
+                    "${filterMenuList[index]['Category']}",
+                    style: TextStyle(
+                      fontSize: 16.sp, // Replace with textRegular
+                      color: Colors.black, // Replace with AppColor.black
+                    ),
+                  ),
+                  trailing: Text(
+                    "${filterMenuList[index]['Type']}",
+                    style: TextStyle(
+                      fontSize: 16.sp, // Replace with textRegular
+                      color: Colors.grey, // Replace with AppColor.grey
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/nested');
+                  },
+                ),
+                Divider(
+                  color: Colors.black, // Replace with AppColor.black
+                ),
+              ],
+            ),
+          ),
+        ),
+        // Add more items here
+      ],
+    ),
+  );
+}
+
+class UndefinedRouteScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Undefined Route'),
+      ),
+      body: Center(
+        child: Text('This route is not defined'),
+      ),
+    );
+  }
 }
