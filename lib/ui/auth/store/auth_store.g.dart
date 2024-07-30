@@ -89,6 +89,22 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     });
   }
 
+  late final _$isCheckAtom =
+      Atom(name: '_AuthStoreBase.isCheck', context: context);
+
+  @override
+  bool get isCheck {
+    _$isCheckAtom.reportRead();
+    return super.isCheck;
+  }
+
+  @override
+  set isCheck(bool value) {
+    _$isCheckAtom.reportWrite(value, super.isCheck, () {
+      super.isCheck = value;
+    });
+  }
+
   late final _$loginAsyncAction =
       AsyncAction('_AuthStoreBase.login', context: context);
 
@@ -131,13 +147,25 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   }
 
   @override
+  void setIsCheck() {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+        name: '_AuthStoreBase.setIsCheck');
+    try {
+      return super.setIsCheck();
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 loginResponse: ${loginResponse},
 logoutResponse: ${logoutResponse},
 errorMessage: ${errorMessage},
 selectedIndex: ${selectedIndex},
-isFavorite: ${isFavorite}
+isFavorite: ${isFavorite},
+isCheck: ${isCheck}
     ''';
   }
 }

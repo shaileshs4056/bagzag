@@ -7,6 +7,7 @@ import 'package:trendify/generated/assets.dart';
 import 'package:trendify/router/app_router.dart';
 import 'package:trendify/ui/auth/store/auth_store.dart';
 import 'package:trendify/ui/home/home_page.dart';
+import 'package:trendify/ui/home/product_categories.dart';
 import 'package:trendify/values/colors.dart';
 import 'package:trendify/values/style.dart';
 import 'package:trendify/widget/app_image.dart';
@@ -20,46 +21,77 @@ class ProductListPage extends StatefulWidget {
 class _ProductListPageState extends State<ProductListPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Map<String, List<Map<String, String>>> filterMenuMap = {
+  Map<String, List<Map<String, dynamic>>> filterMenuMap = {
     'Categories': [
-      {'Type': 'Type A', 'Description': 'Description for Type A'},
-      {'Type': 'Type B', 'Description': 'Description for Type B'},
+      {'Type': 'Women (10)', 'isVisible': false},
+      {'Type': 'Kids (15)', 'isVisible': false},
+      {'Type': 'Beauty (20)', 'isVisible': false},
+      {'Type': 'Home & Living (20)', 'isVisible': false},
+      {'Type': 'Cameras & Photo (20)', 'isVisible': false},
+      {'Type': 'Shoes & Accessories (20)', 'isVisible': false},
     ],
     'Subcategories': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': 'Tops & Dresses', 'isVisible': true},
+      {'Type': 'Bottoms & Skirts', 'isVisible': true},
+      {'Type': 'Outerwear & Jackets', 'isVisible': true},
+      {'Type': 'Footwear', 'isVisible': true},
+      {'Type': 'Electronics', 'isVisible': true},
     ],
     'Brand': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': 'Nike', 'isVisible': true},
+      {'Type': 'Adidas', 'isVisible': true},
+      {'Type': 'Apple', 'isVisible': true},
+      {'Type': 'Samsung', 'isVisible': true},
+      {'Type': 'Sony', 'isVisible': true},
     ],
     'Size': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': 'Small', 'isVisible': true},
+      {'Type': 'Medium', 'isVisible': true},
+      {'Type': 'Large', 'isVisible': true},
+      {'Type': 'Extra Large', 'isVisible': true},
+      {'Type': 'XXL', 'isVisible': true},
     ],
     'Color': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': 'Red', 'isVisible': true},
+      {'Type': 'Blue', 'isVisible': true},
+      {'Type': 'Green', 'isVisible': true},
+      {'Type': 'Black', 'isVisible': true},
+      {'Type': 'White', 'isVisible': true},
     ],
     'Price Range': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': 'Under', 'isVisible': true},
+      {'Type': '- ', 'isVisible': true},
+      {'Type': '\$100 -', 'isVisible': true},
+      {'Type': '\$200', 'isVisible': true},
+      {'Type': 'Over \$500', 'isVisible': true},
     ],
     'Offer Range': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': '10% Off', 'isVisible': true},
+      {'Type': '20% Off', 'isVisible': true},
+      {'Type': '30% Off', 'isVisible': true},
+      {'Type': 'Buy 1 Get 1 Free', 'isVisible': true},
+      {'Type': 'Seasonal Sale', 'isVisible': true},
     ],
     'Delivery Type': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': 'Standard Shipping', 'isVisible': true},
+      {'Type': 'Express Shipping', 'isVisible': true},
+      {'Type': 'Same Day Delivery', 'isVisible': true},
+      {'Type': 'Free Shipping', 'isVisible': true},
+      {'Type': 'In-Store Pickup', 'isVisible': true},
     ],
     'Store Location': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': 'New York', 'isVisible': true},
+      {'Type': 'Los Angeles', 'isVisible': true},
+      {'Type': 'Chicago', 'isVisible': true},
+      {'Type': 'Houston', 'isVisible': true},
+      {'Type': 'San Francisco', 'isVisible': true},
     ],
     'Condition': [
-      {'Type': 'Type C', 'Description': 'Description for Type C'},
-      {'Type': 'Type D', 'Description': 'Description for Type D'},
+      {'Type': 'New', 'isVisible': true},
+      {'Type': 'Used', 'isVisible': true},
+      {'Type': 'Refurbished', 'isVisible': true},
+      {'Type': 'Open Box', 'isVisible': true},
+      {'Type': 'Pre-Owned', 'isVisible': true},
     ],
   };
 
@@ -116,7 +148,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 15.w, vertical: 0),
                                 title: Text(
-                                  "${filterMenuMap['Category']?[index]}",
+                                  "${filterMenuMap.keys.elementAt(index)}",
                                   style: textRegular.copyWith(
                                       color: AppColor.black),
                                 ),
@@ -125,7 +157,20 @@ class _ProductListPageState extends State<ProductListPage> {
                                   style: textRegular.copyWith(
                                       color: AppColor.grey),
                                 ),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CategoryDetailScreen(
+                                          category: filterMenuMap.keys
+                                              .elementAt(index),
+                                          items: filterMenuMap.values
+                                              .elementAt(index)
+                                              .toList(),
+                                        ),
+                                      ));
+                                },
                               ),
                               Divider(
                                 color: AppColor.black,

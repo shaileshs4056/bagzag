@@ -37,10 +37,12 @@ abstract class _AuthStoreBase with Store {
   String? errorMessage;
 
   @observable
-  int selectedIndex =0;
+  int selectedIndex = 0;
 
   @observable
-  bool isFavorite =false;
+  bool isFavorite = false;
+  @observable
+  bool isCheck = false;
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -50,12 +52,15 @@ abstract class _AuthStoreBase with Store {
   void setSelectedIndex(int index) {
     selectedIndex = index;
   }
+
   @action
   void setIsFavorite() {
-    print("object");
-    print(authStore.isFavorite);
     isFavorite = !isFavorite;
-    print(authStore.isFavorite);
+  }
+
+  @action
+  void setIsCheck() {
+    isCheck = !isCheck;
   }
 
   @action
