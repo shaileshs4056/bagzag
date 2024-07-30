@@ -5,6 +5,8 @@ import 'package:trendify/router/app_router.dart';
 import 'package:trendify/ui/auth/store/auth_store.dart';
 import 'package:trendify/values/colors.dart';
 import 'package:trendify/values/style.dart';
+import 'package:trendify/widget/button_widget.dart';
+import 'package:trendify/widget/button_widget_inverse.dart';
 
 class CategoryDetailScreen extends StatelessWidget {
   final String category;
@@ -57,7 +59,6 @@ class CategoryDetailScreen extends StatelessWidget {
         itemCount: items.length,
         itemBuilder: (context, index) {
           final item = items[index];
-
           return Column(
             children: [
               ListTile(
@@ -67,17 +68,11 @@ class CategoryDetailScreen extends StatelessWidget {
                       fontSize: 14.spMin, color: AppColor.black),
                 ),
                 trailing: Visibility(
-                  visible: item['isVisible'],
+                  visible: item['isVisible']!,
                   child: Observer(
                     warnWhenNoObservables: false,
                     builder: (context) {
-                      return CheckboxListTile(
-                        dense: true,
-                        title: Text(
-                          item['Type']!,
-                          style: textRegular.copyWith(
-                              fontSize: 14.spMin, color: AppColor.black),
-                        ),
+                      return Checkbox(
                         value: authStore.isCheck,
                         activeColor: AppColor.neonPink,
                         onChanged: (value) {
@@ -94,6 +89,23 @@ class CategoryDetailScreen extends StatelessWidget {
             ],
           );
         },
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(vertical: 23.h, horizontal: 15.w),
+        child: AppButtonInverse(
+          width: 1.sw,
+          height: 51.h,
+          fontSize: 16.sp,
+          fontWight: FontWeight.w500,
+          radius: 5.r,
+          'Clear Filter',
+          textColor: AppColor.black,
+          () {
+            appRouter.pop();
+          },
+          buttonColor: AppColor.white,
+          borderColor: AppColor.black,
+        ),
       ),
     );
   }

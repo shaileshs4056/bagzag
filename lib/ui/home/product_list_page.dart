@@ -11,6 +11,7 @@ import 'package:trendify/ui/home/product_categories.dart';
 import 'package:trendify/values/colors.dart';
 import 'package:trendify/values/style.dart';
 import 'package:trendify/widget/app_image.dart';
+import 'package:trendify/widget/button_widget_inverse.dart';
 
 @RoutePage()
 class ProductListPage extends StatefulWidget {
@@ -31,25 +32,18 @@ class _ProductListPageState extends State<ProductListPage> {
       {'Type': 'Shoes & Accessories (20)', 'isVisible': false},
     ],
     'Subcategories': [
-      {'Type': 'Tops & Dresses', 'isVisible': true},
-      {'Type': 'Bottoms & Skirts', 'isVisible': true},
-      {'Type': 'Outerwear & Jackets', 'isVisible': true},
+      {'Type': 'Watcher', 'isVisible': true},
+      {'Type': 'Inner Wear', 'isVisible': true},
       {'Type': 'Footwear', 'isVisible': true},
-      {'Type': 'Electronics', 'isVisible': true},
     ],
     'Brand': [
-      {'Type': 'Nike', 'isVisible': true},
-      {'Type': 'Adidas', 'isVisible': true},
-      {'Type': 'Apple', 'isVisible': true},
-      {'Type': 'Samsung', 'isVisible': true},
-      {'Type': 'Sony', 'isVisible': true},
+      {'Type': 'Brand 2', 'isVisible': true},
+      {'Type': 'Brand 3', 'isVisible': true},
+      {'Type': 'Brand 4', 'isVisible': true},
     ],
     'Size': [
-      {'Type': 'Small', 'isVisible': true},
-      {'Type': 'Medium', 'isVisible': true},
-      {'Type': 'Large', 'isVisible': true},
-      {'Type': 'Extra Large', 'isVisible': true},
-      {'Type': 'XXL', 'isVisible': true},
+      {'Type': 'Regular', 'isVisible': true},
+      {'Type': 'Not Specified', 'isVisible': true},
     ],
     'Color': [
       {'Type': 'Red', 'isVisible': true},
@@ -57,13 +51,28 @@ class _ProductListPageState extends State<ProductListPage> {
       {'Type': 'Green', 'isVisible': true},
       {'Type': 'Black', 'isVisible': true},
       {'Type': 'White', 'isVisible': true},
+      {'Type': 'Red', 'isVisible': true},
+      {'Type': 'Blue', 'isVisible': true},
+      {'Type': 'Green', 'isVisible': true},
+      {'Type': 'Black', 'isVisible': true},
+      {'Type': 'White', 'isVisible': true},
+      {'Type': 'Red', 'isVisible': true},
+      {'Type': 'Blue', 'isVisible': true},
+      {'Type': 'Green', 'isVisible': true},
+      {'Type': 'Black', 'isVisible': true},
+      {'Type': 'White', 'isVisible': true},
+      {'Type': 'Red', 'isVisible': true},
+      {'Type': 'Blue', 'isVisible': true},
+      {'Type': 'Green', 'isVisible': true},
+      {'Type': 'Black', 'isVisible': true},
+      {'Type': 'White', 'isVisible': true},
     ],
     'Price Range': [
-      {'Type': 'Under', 'isVisible': true},
-      {'Type': '- ', 'isVisible': true},
+      {'Type': 'Under \$15.00', 'isVisible': true},
+      {'Type': '\$15.00 to \$35.00', 'isVisible': true},
       {'Type': '\$100 -', 'isVisible': true},
-      {'Type': '\$200', 'isVisible': true},
-      {'Type': 'Over \$500', 'isVisible': true},
+      {'Type': 'Over \$35.00', 'isVisible': true},
+      {'Type': 'Custom', 'isVisible': true},
     ],
     'Offer Range': [
       {'Type': '10% Off', 'isVisible': true},
@@ -80,11 +89,9 @@ class _ProductListPageState extends State<ProductListPage> {
       {'Type': 'In-Store Pickup', 'isVisible': true},
     ],
     'Store Location': [
-      {'Type': 'New York', 'isVisible': true},
-      {'Type': 'Los Angeles', 'isVisible': true},
-      {'Type': 'Chicago', 'isVisible': true},
-      {'Type': 'Houston', 'isVisible': true},
-      {'Type': 'San Francisco', 'isVisible': true},
+      {'Type': '10 To 15 Mi', 'isVisible': true},
+      {'Type': '15 To 35 Mi', 'isVisible': true},
+      {'Type': 'Over 34', 'isVisible': true},
     ],
     'Condition': [
       {'Type': 'New', 'isVisible': true},
@@ -102,7 +109,6 @@ class _ProductListPageState extends State<ProductListPage> {
         appBar: _buildAppBar(),
         body: Column(
           children: [
-            _buildSortFilterRow(context),
             Expanded(child: _buildFavouritesProductGrid()),
           ],
         ),
@@ -182,63 +188,29 @@ class _ProductListPageState extends State<ProductListPage> {
                       ],
                     ),
                   ),
+                  bottomNavigationBar: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 23.h, horizontal: 15.w),
+                    child: AppButtonInverse(
+                      width: 1.sw,
+                      height: 51.h,
+                      fontSize: 16.sp,
+                      fontWight: FontWeight.w500,
+                      radius: 5.r,
+                      'Clear Filter',
+                      textColor: AppColor.black,
+                      () {
+                        appRouter.pop();
+                      },
+                      buttonColor: AppColor.white,
+                      borderColor: AppColor.black,
+                    ),
+                  ),
                 ),
               );
             },
           ),
-        )
-        // Drawer(
-        //   child: SingleChildScrollView(
-        //     child: Column(
-        //       children: [
-        //         Padding(
-        //           padding: EdgeInsets.only(
-        //               top: 16.h, left: 21.w, right: 15.w, bottom: 32.h),
-        //           child: Row(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: [
-        //               Text(
-        //                 'Filter',
-        //                 style: textMedium,
-        //               ),
-        //               Text(
-        //                 'Done',
-        //                 style: textMedium.copyWith(color: AppColor.neonPink),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //         Column(
-        //             children: List.generate(
-        //           filterMenuList.length,
-        //           (index) => Column(
-        //             children: [
-        //               ListTile(
-        //                 contentPadding:
-        //                     EdgeInsets.symmetric(horizontal: 15.w, vertical: 0),
-        //                 title: Text(
-        //                   "${filtbuildMainDrawerContenterMenuList[index]['Category']}",
-        //                   style: textRegular.copyWith(color: AppColor.black),
-        //                 ),
-        //                 trailing: Text(
-        //                   "${filterMenuList[index]['Type']}",
-        //                   style: textRegular.copyWith(color: AppColor.grey),
-        //                 ),
-        //                 onTap: () {},
-        //               ),
-        //               Divider(
-        //                 color: AppColor.black,
-        //               ),
-        //             ],
-        //           ),
-        //         )),
-
-        //         // Add more items here
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        );
+        ));
   }
 
   AppBar _buildAppBar() {
@@ -270,6 +242,10 @@ class _ProductListPageState extends State<ProductListPage> {
           ),
         ),
       ],
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(48.0),
+        child: _buildSortFilterRow(context),
+      ),
     );
   }
 
@@ -442,35 +418,40 @@ List<String> favoritesPageImages = [
 ];
 
 Widget _buildFavouritesProductCard(int index) {
-  return Container(
-    color: Colors.white,
-    padding: EdgeInsets.all(8.r),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.topLeft,
-          children: [
-            AppImage(
-              assets: favoritesPageImages[index],
-              height: 139.h,
-              width: 169.w,
-              radius: 5.r,
-              placeHolder:
-                  buildShimmerEffect(radius: 5.r, width: 134.w, height: 169.h),
-            ),
-            if (index % 2 == 0) _buildDiscountTag(),
-            Positioned(
-              top: 8,
-              right: 10.w,
-              child: _buildFavoriteButton(),
-            ),
-          ],
-        ),
-        SizedBox(height: 10.h),
-        _buildProductDetails(),
-      ],
+  return GestureDetector(
+    onTap: () {
+      appRouter.push(ProductDetailsRoute());
+    },
+    child: Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(8.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.topLeft,
+            children: [
+              AppImage(
+                assets: favoritesPageImages[index],
+                height: 139.h,
+                width: 169.w,
+                radius: 5.r,
+                placeHolder: buildShimmerEffect(
+                    radius: 5.r, width: 134.w, height: 169.h),
+              ),
+              if (index % 2 == 0) _buildDiscountTag(),
+              Positioned(
+                top: 8,
+                right: 10.w,
+                child: _buildFavoriteButton(),
+              ),
+            ],
+          ),
+          SizedBox(height: 10.h),
+          _buildProductDetails(),
+        ],
+      ),
     ),
   );
 }

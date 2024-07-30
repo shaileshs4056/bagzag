@@ -57,6 +57,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const OtpPage(),
       );
     },
+    ProductDetailsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ProductDetailsPage(),
+      );
+    },
     ProductListRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -184,6 +190,20 @@ class OtpRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'OtpRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProductDetailsPage]
+class ProductDetailsRoute extends PageRouteInfo<void> {
+  const ProductDetailsRoute({List<PageRouteInfo>? children})
+      : super(
+          ProductDetailsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProductDetailsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
