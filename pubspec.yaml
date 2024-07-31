@@ -101,6 +101,7 @@ dependencies:
   shimmer_animation: ^2.1.0+1
   shimmer: ^3.0.0
   remove: ^1.0.10
+  smooth_page_indicator: ^1.2.0+3
 
 dev_dependencies:
   build_runner: ^2.4.8

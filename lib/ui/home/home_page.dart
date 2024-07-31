@@ -46,7 +46,7 @@ List<String> recentlyViewImageUrls = [
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late ValueNotifier showLoading;
-   int bottomNavigationIndex=0;
+  int bottomNavigationIndex = 0;
 
   List<dynamic> image = [
     CategoryItem(imagePath: Assets.imageMen, name: 'Men'),
@@ -75,66 +75,66 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: Image(
-            image: AssetImage(
-              Assets.imageLogo,
-            ),
-            height: 24.h,
-            width: 24.w,
+      appBar: AppBar(
+        leading: Image(
+          image: AssetImage(
+            Assets.imageLogo,
           ),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: AppColor.white,
-          actions:[
-            InkWell(
-              onTap: () {},
-              child: Image(
-                image: AssetImage(
-                  Assets.imageSearch,
-                ),
-                height: 24.h,
-                width: 24.w,
-              ),
-            ),
-            10.horizontalSpace,
-            InkWell(
-              onTap: () {
-                appRouter.push(FavoritesRoute());
-              },
-              child: Image(
-                image: AssetImage(
-                  Assets.imageFavourite,
-                ),
-                height: 24.h,
-                width: 24.w,
-              ),
-            ),
-            10.horizontalSpace,
-            InkWell(
-              onTap: () {},
-              child: Image(
-                image: AssetImage(Assets.imageNotification),
-                height: 24.h,
-                width: 24.w,
-              ),
-            ),
-            10.horizontalSpace,
-            InkWell(
-              onTap: () {},
-              child: Image(
-                image: AssetImage(
-                  Assets.imageCart,
-                ),
-                height: 24.h,
-                width: 24.w,
-              ),
-            ),
-            10.horizontalSpace,
-          ],
+          height: 24.h,
+          width: 24.w,
         ),
-        body: SingleChildScrollView(
-            child: Padding(
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: AppColor.white,
+        actions: [
+          InkWell(
+            onTap: () {},
+            child: Image(
+              image: AssetImage(
+                Assets.imageSearch,
+              ),
+              height: 24.h,
+              width: 24.w,
+            ),
+          ),
+          10.horizontalSpace,
+          InkWell(
+            onTap: () {
+              appRouter.push(FavoritesRoute());
+            },
+            child: Image(
+              image: AssetImage(
+                Assets.imageFavourite,
+              ),
+              height: 24.h,
+              width: 24.w,
+            ),
+          ),
+          10.horizontalSpace,
+          InkWell(
+            onTap: () {},
+            child: Image(
+              image: AssetImage(Assets.imageNotification),
+              height: 24.h,
+              width: 24.w,
+            ),
+          ),
+          10.horizontalSpace,
+          InkWell(
+            onTap: () {},
+            child: Image(
+              image: AssetImage(
+                Assets.imageCart,
+              ),
+              height: 24.h,
+              width: 24.w,
+            ),
+          ),
+          10.horizontalSpace,
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 0.r),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -240,8 +240,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   itemCount: bestSellerImageUrls.length,
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedBox(
-                        width: 15.w
-                    ); // Adjust the width of the separator as needed
+                        width: 15
+                            .w); // Adjust the width of the separator as needed
                   },
                   itemBuilder: (BuildContext context, int index) {
                     return bestsellerCustomStack(
@@ -276,13 +276,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     color: AppColor.grey,
                   )
                 ],
-              ).wrapPaddingOnly(top: 16.h, bottom: 11.h,left: 15.r,right: 15.r),
+              ).wrapPaddingOnly(
+                  top: 16.h, bottom: 11.h, left: 15.r, right: 15.r),
               SizedBox(
                 height: 112.h,
                 child: ListView.separated(
-shrinkWrap: true,
-                  padding: EdgeInsets.only(left: 15.w),
-                  scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(left: 15.w),
+                    scrollDirection: Axis.horizontal,
                     itemCount: 4,
                     itemBuilder: (context, index) {
                       return buyersMostLoved(
@@ -315,7 +316,8 @@ shrinkWrap: true,
                     color: AppColor.grey,
                   )
                 ],
-              ).wrapPaddingOnly(top: 16.h, bottom: 11.h,left: 15.r,right: 15.r),
+              ).wrapPaddingOnly(
+                  top: 16.h, bottom: 11.h, left: 15.r, right: 15.r),
               SizedBox(
                 height: 262.h,
                 child: ListView.separated(
@@ -330,7 +332,7 @@ shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return bestsellerCustomStack(
                         imagePath:
-                        'https://s3-alpha-sig.figma.com/img/b572/2438/27d69e0740d46a92db1ff2dc75094fd4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iQEJspcCthVNh9rQMfQV0S1hJhNBfcnKNHjfp0HmhIEhvVojwCTIuNaHmngzjKFl3nYCrBUj-rlQbpc9QplvIpdq42It0eUIOb6yawIWnkRTJBuN80yUru9D-YZ4kME~YznF8pY4vuGHo2x-SKHl4wKBIMnqFg5jSffVUE81OlSlIyuSueC~Wr5OsLSzEqS16PRKilu~wLLhSe4GgVLrvwG46i~x~YVXKAgyU5eGb3avI2WtR72cTLaE4IbKPEoOEuqyix6LOyTqworZR9YhojF~-iVKSLJINDQDXTMB2tU0Vw2mi7t-gDDn5TAzz1WFmV0DI4BZajB8wxQA0xWeVA__',
+                            'https://s3-alpha-sig.figma.com/img/b572/2438/27d69e0740d46a92db1ff2dc75094fd4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iQEJspcCthVNh9rQMfQV0S1hJhNBfcnKNHjfp0HmhIEhvVojwCTIuNaHmngzjKFl3nYCrBUj-rlQbpc9QplvIpdq42It0eUIOb6yawIWnkRTJBuN80yUru9D-YZ4kME~YznF8pY4vuGHo2x-SKHl4wKBIMnqFg5jSffVUE81OlSlIyuSueC~Wr5OsLSzEqS16PRKilu~wLLhSe4GgVLrvwG46i~x~YVXKAgyU5eGb3avI2WtR72cTLaE4IbKPEoOEuqyix6LOyTqworZR9YhojF~-iVKSLJINDQDXTMB2tU0Vw2mi7t-gDDn5TAzz1WFmV0DI4BZajB8wxQA0xWeVA__',
                         title: '');
                   },
                 ),
@@ -338,17 +340,13 @@ shrinkWrap: true,
             ],
           ),
         ),
-        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (value){
-          bottomNavigationIndex=value;
-          setState(() {
-
-          });
-
+        onTap: (value) {
+          bottomNavigationIndex = value;
+          setState(() {});
         },
         type: BottomNavigationBarType.fixed,
-
         selectedItemColor: AppColor.neonPink,
         currentIndex: bottomNavigationIndex,
         unselectedItemColor: AppColor.black,
@@ -356,13 +354,33 @@ shrinkWrap: true,
         showUnselectedLabels: true,
         iconSize: 20.h,
         elevation: 0,
-
         items: [
-          BottomNavigationBarItem(icon: Image(image: AssetImage(Assets.imageHome,)),label: "Home"),
-          BottomNavigationBarItem(icon: Image(image: AssetImage(Assets.imageStudio),),label: "Studio"),
-          BottomNavigationBarItem(icon: Image(image: AssetImage(Assets.imageSell),),label: "Sell"),
-          BottomNavigationBarItem(icon: Image(image: AssetImage(Assets.imageFeed),),label: "Feed"),
-          BottomNavigationBarItem(icon: Image(image: AssetImage(Assets.imageMe),),label: "Me"),
+          BottomNavigationBarItem(
+              icon: Image(
+                  image: AssetImage(
+                Assets.imageHome,
+              )),
+              label: "Home"),
+          BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage(Assets.imageStudio),
+              ),
+              label: "Studio"),
+          BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage(Assets.imageSell),
+              ),
+              label: "Sell"),
+          BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage(Assets.imageFeed),
+              ),
+              label: "Feed"),
+          BottomNavigationBarItem(
+              icon: Image(
+                image: AssetImage(Assets.imageMe),
+              ),
+              label: "Me"),
         ],
       ),
     );
@@ -778,7 +796,6 @@ Widget recentlyViewedCustomStack(
 
 Widget buyersMostLoved({required String imageUrl}) {
   return Container(
-
     decoration: BoxDecoration(
       color: AppColor.mercury,
       borderRadius: BorderRadius.circular(5.r),
