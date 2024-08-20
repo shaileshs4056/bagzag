@@ -86,7 +86,7 @@ class _FavoritesPageState extends State<FavoritesPage>
           ],
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_outlined,
+          icon: const Icon(Icons.arrow_back_ios_new_outlined,size: 20,
               color: AppColor.black),
           onPressed: () => appRouter.pop(),
         ),
@@ -301,71 +301,63 @@ class _FavoritesPageState extends State<FavoritesPage>
       onTap: () {
         appRouter.push(BrowseCategoriesRoute());
       },
-      child: Container(
-        clipBehavior: Clip.none,
-        alignment: Alignment.topLeft,
-        padding: EdgeInsets.zero,
-        margin: EdgeInsets.only(left: 15.w, right: 18.r),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            AppImage(
-              backgroundColor: AppColor.grey,
-              assets: favoritesStorePageImages[index]['imagePath'],
-              height: 154.h,
-              radius: 5.r,
-              width: double.maxFinite,
-              boxFit: BoxFit.contain,
-              placeHolder:
-                  buildShimmerEffect(radius: 5.r, height: 159.h, width: 1.sw),
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${favoritesStorePageImages[index]['title']}",
-                      style: textRegular.copyWith(fontSize: 16.sp),
-                    ).wrapPaddingOnly(top: 5, bottom: 10),
-                    Text(
-                      "3038 Godfrey Stree Tigard, OR 97223",
-                      style: textRegular.copyWith(fontSize: 12.sp),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Image.asset(favoritesStorePageImages[index]['imagePath'],fit: BoxFit.cover,height: 154,width: double.infinity,),
+          AppImage(
+            backgroundColor: AppColor.red,
+            assets: favoritesStorePageImages[index]['imagePath'],
+            height: 154.h,
+            width:double.infinity,
+            radius: 10.r,
+            boxFit: BoxFit.cover,
+            placeHolder:
+                buildShimmerEffect(radius: 5.r, height: 159.h, width: 1.sw),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "${favoritesStorePageImages[index]['title']}",
+                    style: textRegular.copyWith(fontSize: 16.sp),
+                  ).wrapPaddingOnly(top: 5, bottom: 10),
+                  Text(
+                    "3038 Godfrey Stree Tigard, OR 97223",
+                    style: textRegular.copyWith(fontSize: 12.sp),
+                  ),
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  authStore.setIsFavorite();
+                },
+                child: Observer(builder: (context) {
+                  return Container(
+                    padding: EdgeInsets.all(8.r),
+                    decoration: const BoxDecoration(
+                      color: AppColor.mercury,
+                      shape: BoxShape.circle,
                     ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    authStore.setIsFavorite();
-                  },
-                  child: Observer(builder: (context) {
-                    return Container(
-                      padding: EdgeInsets.all(8.r),
-                      decoration: const BoxDecoration(
-                        color: AppColor.mercury,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        authStore.isFavorite
-                            ? Assets.imageBlackHeart
-                            : Assets.imagePinkHeart,
-                        height: 12.h,
-                        width: 12.w,
-                        fit: BoxFit.contain,
-                      ),
-                    );
-                  }),
-                ).wrapPaddingOnly(right: 5.w),
-              ],
-            )
-          ],
-        ),
-      ),
+                    child: Image.asset(
+                      authStore.isFavorite
+                          ? Assets.imageBlackHeart
+                          : Assets.imagePinkHeart,
+                      height: 12.h,
+                      width: 12.w,
+                      fit: BoxFit.contain,
+                    ),
+                  );
+                }),
+              ).wrapPaddingOnly(right: 5.w),
+            ],
+          ),
+        ],
+      ).wrapPaddingSymmetric(horizontal: 15.w),
     );
   }
 }

@@ -26,7 +26,7 @@ class _CategoriesDetailesPageState extends State<CategoriesDetailesPage> {
                 stretchModes: [StretchMode.zoomBackground],
                 titlePadding: EdgeInsets.only(left: 15.w, bottom: 20.h),
                 title: Text(
-                  'Man',
+                  'Men',
                   textAlign: TextAlign.left,
                   style: textSemiBold.copyWith(
                       color: AppColor.black, fontSize: 30.spMin),
@@ -44,7 +44,7 @@ class _CategoriesDetailesPageState extends State<CategoriesDetailesPage> {
             // Snap app bar to the top on scroll
             snap: true,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_outlined,
+              icon: const Icon(Icons.arrow_back_ios_new_outlined,size: 20,
                   color: AppColor.black),
               onPressed: () => appRouter.pop(),
             ),

@@ -217,7 +217,7 @@ class _ProductListPageState extends State<ProductListPage> {
     return AppBar(
       leading: IconButton(
         icon: const Icon(
-          Icons.arrow_back_ios_new_outlined,
+          Icons.arrow_back_ios_new_outlined,size: 20,
           color: AppColor.black,
         ),
         onPressed: () => appRouter.pop(),

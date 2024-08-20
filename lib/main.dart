@@ -49,13 +49,34 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final AppRouter appRouter;
 
   const MyApp({required this.appRouter, super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  void initState() {
+    // TODO: implement initState
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: AppColor.white,
+statusBarIconBrightness: Brightness.dark
+
+    ));
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    void initState() {
+      // TODO: implement initState
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom]);
+      super.initState();
+    }
     return ScreenUtilInit(
       useInheritedMediaQuery: true,
       builder: (context, child) => MaterialApp.router(
@@ -73,8 +94,8 @@ class MyApp extends StatelessWidget {
           );
           return child;
         },
-        routerDelegate: appRouter.delegate(),
-        routeInformationParser: appRouter.defaultRouteParser(),
+        routerDelegate: widget.appRouter.delegate(),
+        routeInformationParser: widget.appRouter.defaultRouteParser(),
         onGenerateTitle: (context) => S.of(context).applicationTitle,
         localizationsDelegates: const [
           S.delegate,

@@ -28,7 +28,7 @@ class CategoryDetailScreen extends StatelessWidget {
         shadowColor: AppColor.white,
         backgroundColor: AppColor.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_outlined,
+          icon: const Icon(Icons.arrow_back_ios_new_outlined,size: 20,
               color: AppColor.black),
           onPressed: () => appRouter.pop(),
         ),

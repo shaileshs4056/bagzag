@@ -3,6 +3,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trendify/data/model/response/categories.dart';
 import 'package:trendify/ui/auth/store/auth_store.dart';
 import 'package:trendify/ui/home/home_page.dart';
@@ -28,7 +29,7 @@ class _BrowseCategoriesPageState extends State<BrowseCategoriesPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_outlined,
+          icon: const Icon(Icons.arrow_back_ios_new_outlined,size: 20,
               color: AppColor.black),
           onPressed: () => appRouter.pop(),
         ),
@@ -40,15 +41,11 @@ class _BrowseCategoriesPageState extends State<BrowseCategoriesPage> {
           style: textMedium.copyWith(fontSize: 20.spMin, color: AppColor.black),
         ),
         actions: [
-          InkWell(
+          GestureDetector(
             onTap: () {},
             child: Padding(
               padding: EdgeInsets.only(right: 10.w),
-              child: Image.asset(
-                Assets.imageCart,
-                height: 21.h,
-                width: 21.w,
-              ),
+              child: SvgPicture.asset(Assets.assetsImageFilter,height: 21,width: 21,)
             ),
           ),
           InkWell(

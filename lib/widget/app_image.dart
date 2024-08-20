@@ -69,7 +69,7 @@ class _AppImageState extends State<AppImage> {
               : widget.assets != null
                   ? Image.asset(
                       widget.assets!,
-                      fit: BoxFit.scaleDown,
+                      fit: BoxFit.cover,
                       height: widget.height ?? widget.radius * 2,
                       width: widget.width ?? widget.radius * 2,
                     )

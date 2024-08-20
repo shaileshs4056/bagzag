@@ -13,6 +13,7 @@ import 'package:trendify/values/colors.dart';
 import 'package:trendify/values/extensions/widget_ext.dart';
 import 'package:trendify/values/style.dart';
 import 'package:trendify/widget/app_image.dart';
+import 'package:trendify/widget/button_widget.dart';
 
 @RoutePage()
 class ProductDetailsPage extends StatefulWidget {
@@ -65,7 +66,7 @@ AppBar _buildAppBar() {
   return AppBar(
     leading: IconButton(
       icon: const Icon(
-        Icons.arrow_back_ios_new_outlined,
+        Icons.arrow_back_ios_new_outlined,size: 20,
         color: AppColor.black,
       ),
       onPressed: () => appRouter.pop(),
@@ -460,6 +461,7 @@ List<String> favoritesPageImages = [
 Widget _buildImageview() {
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -484,6 +486,7 @@ Widget _buildImageview() {
               },
             ),
           ),
+          10.verticalSpace,
           SmoothPageIndicator(
             controller: controller,
             count: favoritesPageImages.length,
@@ -511,6 +514,7 @@ Widget _buildImageview() {
                       fontSize: 10.spMin, color: AppColor.green),
                 ),
               ),
+              Text("Denim",style: textRegular.copyWith(color: AppColor.grey,fontSize: 14.sp),),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -615,41 +619,140 @@ Widget _buildImageview() {
           ).wrapPaddingSymmetric(horizontal: 15.w)
         ],
       ),
-      Divider(),
+      Divider(
+        color: AppColor.black,
+        indent: 3
+
+      ),
       Row(
         children: [
-          Image(
-            image: AssetImage('assets/image/like.png'),
-            color: AppColor.black,
-          ),
+          SvgPicture.asset(Assets.assetsImageLike,color: AppColor.black,),
           10.horizontalSpace,
           Text(
             "26",
             style: textRegular.copyWith(fontSize: 14.spMin),
           ),
           25.horizontalSpace,
-          Image(
-            image: AssetImage('assets/image/Chat.png'),
-            color: AppColor.black,
-          ),
+          SvgPicture.asset(Assets.assetsImageChat),
           10.horizontalSpace,
           Text(
             "30",
             style: textRegular.copyWith(fontSize: 14.spMin),
           ),
           30.horizontalSpace,
-          Image(
-            image: AssetImage('assets/image/Send.png'),
-            color: AppColor.black,
-          ),
+          SvgPicture.asset(Assets.assetsImageSend),
           Spacer(),
-          Image(
-            image: AssetImage('assets/image/Send.png'),
-            color: AppColor.black,
-          ),
+        SvgPicture.asset(Assets.imageAddUser)
         ],
       ).wrapPaddingSymmetric(horizontal: 15.w, vertical: 8.h),
-      Divider(),
+      Divider(
+          color: AppColor.black,
+          indent: 3
+
+      ),
+      _buildColorAndSize(),
+      
     ],
   );
+}
+
+final List<Color> colors = [
+  AppColor.black,
+  Colors.red,
+  Colors.green,
+  Colors.blue,
+];
+final List<String> size = [
+  "S",
+  "M",
+  "L",
+  "XL",
+  "XXL",
+];
+
+
+Widget _buildColorAndSize() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text("Color:",
+        style: textRegular.copyWith(color: AppColor.black,
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w400),),
+      10.verticalSpace,
+      SizedBox(
+        height: 35.h,
+        child: ListView.separated(
+          padding: EdgeInsets.symmetric(vertical: 2.h),
+          shrinkWrap: true,
+  scrollDirection: Axis.horizontal,itemBuilder: (context, index) {
+          return Container(
+            padding: EdgeInsets.all(5.w),
+            height: 35,
+            width: 35,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(1.r),
+                color: AppColor.white,
+                boxShadow: [
+                  BoxShadow(color: AppColor.grey,
+                  blurRadius: 3.r)
+
+                ],
+                border: Border.all(width: 1,color: AppColor.grey),
+            ),
+            child: Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(1.r),
+                  color: colors[index],
+
+              ),
+            ),
+          );
+        }, separatorBuilder: (context, index) {
+          return SizedBox(
+            width: 10.w,
+          );
+        }, itemCount: colors.length),
+      ),
+      10.verticalSpace,
+      Row(
+        children: [
+          Text("Size",
+            style: textRegular.copyWith(color: AppColor.black,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400),),
+        ],
+      ),
+      10.verticalSpace,
+      SizedBox(
+        height: 35.h,
+        child: ListView.separated(
+            padding: EdgeInsets.symmetric(vertical: 2.h),
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,itemBuilder: (context, index) {
+          return Container(
+            alignment: Alignment.center,
+            height: 35,
+            width: 35,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(1.r),
+                color: AppColor.white,
+                border: Border.all(width: 1,color: AppColor.black)
+            ),
+            child: Text(size[index],style: textRegular.copyWith(color: AppColor.grey),)
+          );
+        }, separatorBuilder: (context, index) {
+          return SizedBox(
+            width: 10.w,
+          );
+        }, itemCount: size.length),
+      ),
+
+      AppButton(height:55.h ,"Add to cart", () {
+
+      },)
+    ],
+  ).wrapPaddingSymmetric(horizontal: 15.w);
 }
