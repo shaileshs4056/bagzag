@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:trendify/ui/home/widget/product_list_widget.dart';
 import 'package:trendify/values/extensions/widget_ext.dart';
 
 import '../../generated/assets.dart';
@@ -32,16 +33,6 @@ class _FavoritesPageState extends State<FavoritesPage>
     tabController = TabController(length: 2, vsync: this);
   }
 
-  List<String> favoritesPageImages = [
-    Assets.imageFavproductone,
-    Assets.imageFavproducttwo,
-    Assets.imageFavproductthree,
-    Assets.imageFavproductfour,
-    Assets.imageFavproductone,
-    Assets.imageFavproducttwo,
-    Assets.imageFavproductthree,
-    Assets.imageFavproductfour,
-  ];
   List<Map<String, dynamic>> favoritesStorePageImages = [
     {
       'imagePath': Assets.imageFavoritiesStoreImageone,
@@ -115,172 +106,11 @@ class _FavoritesPageState extends State<FavoritesPage>
         controller: tabController,
         children: [
           _buildFavouritesStoreList(),
-          _buildFavouritesProductGrid(),
+          ProductListWidget()
         ],
       ),
     );
   }
-
-  Widget _buildFavouritesProductGrid() {
-    return GridView.builder(
-      itemCount: favoritesPageImages.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisExtent: 242.h,
-        crossAxisSpacing: 2,
-        mainAxisSpacing: 2,
-        crossAxisCount: 2,
-      ),
-      shrinkWrap: true,
-      clipBehavior: Clip.none,
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
-      itemBuilder: (context, index) {
-        return _buildFavouritesProductCard(index);
-      },
-    );
-  }
-
-  Widget _buildFavouritesProductCard(int index) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.topLeft,
-            children: [
-              AppImage(
-                assets: favoritesPageImages[index],
-                height: 139.h,
-                width: 169.w,
-                radius: 5.r,
-                placeHolder: buildShimmerEffect(
-                    radius: 5.r, width: 134.w, height: 169.h),
-              ),
-              Positioned(
-                  top: 10,
-                  left: 0,
-                  child: Visibility(
-                    visible: index % 2 == 0
-                        ? true
-                        : false, // Set this to false to hide the container
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 3.r, vertical: 3.r),
-                      decoration: BoxDecoration(
-                        color: AppColor.neonPink,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(2.r),
-                          bottomRight: Radius.circular(2.r),
-                        ),
-                      ),
-                      child: Text(
-                        "30% Off",
-                        style: textMedium.copyWith(
-                            fontSize: 8.spMin, color: AppColor.white),
-                      ),
-                    ),
-                  )),
-              Positioned(
-                top: 8,
-                right: 0,
-                child: InkWell(
-                  onTap: () {
-                    authStore.setIsFavorite();
-                  },
-                  child: Observer(builder: (context) {
-                    return Container(
-                      padding: EdgeInsets.all(8.r),
-                      decoration: const BoxDecoration(
-                        color: AppColor.mercury,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        authStore.isFavorite
-                            ? Assets.imageBlackHeart
-                            : Assets.imagePinkHeart,
-                        height: 12.h,
-                        width: 12.w,
-                        fit: BoxFit.contain,
-                      ),
-                    );
-                  }),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.r),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Loose Textured T-Shirt"),
-                SizedBox(height: 5.h),
-                Row(
-                  children: [
-                    Image.asset(
-                      Assets.imageStar,
-                      height: 12.h,
-                      width: 12.w,
-                      fit: BoxFit.contain,
-                    ),
-                    SizedBox(width: 5.w),
-                    Text(
-                      "4.5",
-                      style: textMedium.copyWith(
-                          color: AppColor.black, fontSize: 12.spMin),
-                    ),
-                    Text(
-                      " | 256",
-                      style: textRegular.copyWith(
-                          color: AppColor.grey, fontSize: 12.spMin),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8.h),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 6.r),
-                  decoration: BoxDecoration(
-                    color: AppColor.mercury.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(2.r),
-                  ),
-                  child: Text(
-                    "Free Shipping",
-                    style: textMedium.copyWith(
-                        fontSize: 10.spMin, color: AppColor.grey),
-                  ),
-                ),
-                SizedBox(height: 7.h),
-                Row(
-                  children: [
-                    Text(
-                      "\$119.99",
-                      style: textMedium.copyWith(
-                          color: AppColor.black, fontSize: 12.spMin),
-                    ),
-                    SizedBox(width: 5.w),
-                    Text(
-                      "\$159.99",
-                      style: textRegular.copyWith(
-                        decoration: TextDecoration.lineThrough,
-                        color: AppColor.grey,
-                        fontSize: 12.spMin,
-                      ),
-                    ),
-                    const Spacer(),
-                    SvgPicture.asset(Assets.imageAddTocart),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   ///store list build method
   Widget _buildFavouritesStoreList() {
     return ListView.separated(

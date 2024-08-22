@@ -128,5 +128,7 @@
   "firstName": "First Name",
   "hi": "Hi,",
   "favorites": "Favorites",
-  "browseCategories": "Browse Categories"
+  "browseCategories": "Browse Categories",
+  "signIn": "Sign In",
+  "storeDetails": "Store Details"
 }

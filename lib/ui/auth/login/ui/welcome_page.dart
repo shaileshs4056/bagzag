@@ -144,7 +144,7 @@ class _WelcomePageState extends State<WelcomePage>
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       AppButtonInverse(
-                        "Sign Up",
+                        S.of(context).signUp,
                         (){
                           appRouter.push(SignUpRoute());
                         },
@@ -156,7 +156,7 @@ class _WelcomePageState extends State<WelcomePage>
                       ),
 
                       AppButtonInverse(
-                        "Sign In",
+                        S.of(context).signIn,
                         () {
                           showModalBottomSheet(
                             isScrollControlled: true,
@@ -332,7 +332,7 @@ class _WelcomePageState extends State<WelcomePage>
                     ],
                   ),
                   27.verticalSpace,
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       appRouter.push(HomeRoute());
                     },

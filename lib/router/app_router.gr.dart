@@ -51,6 +51,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginPage(),
       );
     },
+    NotificationsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const NotificationsPage(),
+      );
+    },
     OtpRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -69,6 +75,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: ProductListPage(),
       );
     },
+    RateReviewsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const RateReviewsPage(),
+      );
+    },
     ResetPasswordRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -85,6 +97,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const SplashPage(),
+      );
+    },
+    StoreDetailsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const StoreDetailsPage(),
       );
     },
     WelcomeRoute.name: (routeData) {
@@ -181,6 +199,20 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [NotificationsPage]
+class NotificationsRoute extends PageRouteInfo<void> {
+  const NotificationsRoute({List<PageRouteInfo>? children})
+      : super(
+          NotificationsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NotificationsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [OtpPage]
 class OtpRoute extends PageRouteInfo<void> {
   const OtpRoute({List<PageRouteInfo>? children})
@@ -223,6 +255,20 @@ class ProductListRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [RateReviewsPage]
+class RateReviewsRoute extends PageRouteInfo<void> {
+  const RateReviewsRoute({List<PageRouteInfo>? children})
+      : super(
+          RateReviewsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RateReviewsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [ResetPasswordPage]
 class ResetPasswordRoute extends PageRouteInfo<void> {
   const ResetPasswordRoute({List<PageRouteInfo>? children})
@@ -260,6 +306,20 @@ class SplashRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SplashRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [StoreDetailsPage]
+class StoreDetailsRoute extends PageRouteInfo<void> {
+  const StoreDetailsRoute({List<PageRouteInfo>? children})
+      : super(
+          StoreDetailsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'StoreDetailsRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

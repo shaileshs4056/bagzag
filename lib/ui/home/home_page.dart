@@ -10,13 +10,19 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:trendify/generated/assets.dart';
 import 'package:trendify/ui/auth/store/auth_store.dart';
 import 'package:trendify/ui/home/product_details.dart';
+import 'package:trendify/ui/home/widget/product_details_widget.dart';
 import 'package:trendify/values/extensions/widget_ext.dart';
 import 'package:trendify/widget/app_image.dart';
 import '../../data/model/response/categories.dart';
+import '../../data/model/response/product_details_responce.dart';
 import '../../generated/l10n.dart';
 import '../../router/app_router.dart';
 import '../../values/colors.dart';
 import '../../values/style.dart';
+
+
+
+
 
 
 @RoutePage()
@@ -114,7 +120,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
           10.horizontalSpace,
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              appRouter.push(NotificationsRoute());
+            },
             child: Image(
               image: AssetImage(Assets.imageNotification),
               height: 24.h,
@@ -171,10 +179,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             15.verticalSpace,
             categoriesSection(image),
             15.verticalSpace,
-            bestsellerProductsSection(bestSellerImageUrls),
+            bestsellerProductsSection(productsList),
             20.verticalSpace,
             recentlyViewedCustomStack(),
-
             buyersMostLovedSection(),
             findThingsYoullLoveSection(bestSellerImageUrls)
           ],
@@ -321,7 +328,7 @@ Widget categoriesSection(List<CategoryItem> image) {
     ],
   );
 }
-Widget bestsellerProductsSection(List<String> bestSellerImageUrls) {
+Widget bestsellerProductsSection(List<Product> productsList) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -352,15 +359,20 @@ Widget bestsellerProductsSection(List<String> bestSellerImageUrls) {
         child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 15.r),
           scrollDirection: Axis.horizontal,
-          itemCount: bestSellerImageUrls.length,
+          itemCount: productsList.length,
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(
                 width: 15.w); // Adjust the width of the separator as needed
           },
           itemBuilder: (BuildContext context, int index) {
-            return bestsellerCustomStack(
-                imagePath: bestSellerImageUrls[index],
-                title: '');
+            return BestsellerStackWidget(
+              imagePath: productsList[index].imagePath,
+              title: productsList[index].productTitle,
+              discountPercentage: productsList[index].discount,
+              isFavorite: productsList[index].favorite,
+              currentPrice: productsList[index].afterDiscountPrice,
+              originalPrice: productsList[index].realPrice,
+            );
           },
         ),
       ),
@@ -369,144 +381,7 @@ Widget bestsellerProductsSection(List<String> bestSellerImageUrls) {
 }
 
 
-Widget bestsellerCustomStack(
-    {required String imagePath, required String title}) {
-  return Observer(builder: (context) {
-    return SizedBox(
-      width: 140.w,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: [
-              Container(
-                height: 175.h,
-          width: 130.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.r),
-                  color: AppColor.mercury
-                ),
-                child: AppImage(
-                    assets: imagePath,
-                    backgroundColor: AppColor.grey,
-                    height: 180.h,
-                    width: 140.w,
-                    radius: 5.r,
-                    boxFit: BoxFit.cover,
-                    placeHolder: buildShimmerEffect(
-                        radius: 5.r, width: 134.w, height: 180.h)),
-              ),
-              Positioned(
-                top: 10,
-                left: 0,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 3.r, vertical: 3.r),
-                  decoration: BoxDecoration(
-                      color: AppColor.neonPink,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(2.r),
-                          bottomRight: Radius.circular(2.r))),
-                  child: Text(
-                    "30% Off",
-                    style: textMedium.copyWith(
-                        fontSize: 8.spMin, color: AppColor.white),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 8,
-                right: 5,
-                child: InkWell(
-                  onTap: () {
-                    authStore.setIsFavorite();
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(8.r),
-                      decoration: BoxDecoration(
-                          color: AppColor.white, shape: BoxShape.circle),
-                      child: authStore.isFavorite
-                          ? Image(image: AssetImage(Assets.imageBlackHeart))
-                          : Image(
-                              image: AssetImage(Assets.imagePinkHeart),
-                              height: 12.h,
-                              width: 12.w,
-                              fit: BoxFit.contain,
-                            )),
-                ),
-              ),
-            ],
-          ),
-          6.verticalSpace,
-          Text("Loose Textured T-Shirt"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image(
-                image: AssetImage(Assets.imageStar),
-                height: 12.h,
-                width: 12.w,
-                fit: BoxFit.contain,
-              ),
-              5.horizontalSpace,
-              Text(
-                "4.5",
-                style: textMedium.copyWith(
-                    color: AppColor.black, fontSize: 12.spMin),
-              ),
-              Text(
-                " | 256",
-                style: textRegular.copyWith(
-                  color: AppColor.grey,
-                  fontSize: 12.spMin,
-                ),
-              ),
-            ],
-          ),
-          5.verticalSpace,
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 6.r),
-            decoration: BoxDecoration(
-                color: AppColor.mercury.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(2.r)),
-            child: Text(
-              "Free Shipping",
-              style:
-                  textMedium.copyWith(fontSize: 10.spMin, color: AppColor.grey),
-            ),
-          ),
-          5.verticalSpace,
-          Row(
-            children: [
-              Text(
-                "\$119.99",
-                style: textMedium.copyWith(
-                  color: AppColor.black,
-                  fontSize: 12.spMin,
-                ),
-              ),
-              5.horizontalSpace,
-              Text(
-                "\$159.99",
-                style: textRegular.copyWith(
-                    decoration: TextDecoration.lineThrough,
-                    color: AppColor.grey,
-                    fontSize: 12.spMin),
-              ),
-              Spacer(),
-              SvgPicture.asset(
-                Assets.imageAddTocart,
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  });
-}
+
 
 Widget recentlyViewedCustomStack() {
   return Observer(builder: (context) {
@@ -932,15 +807,21 @@ Widget findThingsYoullLoveSection(List<String> imageUrls) {
         child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 15.r),
           scrollDirection: Axis.horizontal,
-          itemCount: imageUrls.length,
+          itemCount: productsList.length,
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(
                 width: 15.w); // Adjust the width of the separator as needed
           },
           itemBuilder: (BuildContext context, int index) {
-            return bestsellerCustomStack(
-                imagePath: imageUrls[index],
-                title: '');
+            return BestsellerStackWidget(
+              imagePath: productsList[index].imagePath,
+              title: productsList[index].productTitle,
+              discountPercentage: productsList[index].discount,
+              isFavorite: productsList[index].favorite,
+              currentPrice: productsList[index].afterDiscountPrice,
+              originalPrice: productsList[index].realPrice,
+            );
+
           },
         ),
       ),

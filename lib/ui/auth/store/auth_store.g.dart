@@ -158,6 +158,17 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   }
 
   @override
+  String getCurrentTime() {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+        name: '_AuthStoreBase.getCurrentTime');
+    try {
+      return super.getCurrentTime();
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 loginResponse: ${loginResponse},

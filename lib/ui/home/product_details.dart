@@ -1,19 +1,20 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:encrypt/encrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:trendify/generated/assets.dart';
 import 'package:trendify/router/app_router.dart';
 import 'package:trendify/ui/auth/store/auth_store.dart';
+import 'package:trendify/ui/home/Store_Details.dart';
 import 'package:trendify/ui/home/home_page.dart';
+import 'package:trendify/ui/home/widget/product_details_widget.dart';
 import 'package:trendify/values/colors.dart';
 import 'package:trendify/values/extensions/widget_ext.dart';
 import 'package:trendify/values/style.dart';
 import 'package:trendify/widget/app_image.dart';
-import 'package:trendify/widget/button_widget.dart';
 
 @RoutePage()
 class ProductDetailsPage extends StatefulWidget {
@@ -22,8 +23,8 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 List<String> bestSellerImageUrls = [
-  Assets.imageBestsellerimageone,
   Assets.imageBestsellerimagetwo,
+  Assets.imageBestsellerimageone,
   Assets.imageBestsellerimageone,
 ];
 
@@ -34,13 +35,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       backgroundColor: AppColor.white,
       appBar: _buildAppBar(),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
           child: Column(
         children: [
           _buildImageview(),
           _buildDeliveryMenus(),
           theNewStore(
               imageUrl:
-                  'https://s3-alpha-sig.figma.com/img/05b6/9523/9b03725ad6994b2cacd5dc2ae81f458c?Expires=1723420800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=cCmCNR15zggn6FbYdyjQpyTyZfQ8rFMCMy4XPvpn-0fB3ZMTfaDfGLpL4UW2F~OAfCbICyCrAk1yoyFA09E7dTaTLS5u-7L199FB~OqsFHfNj6hUkKjc4vrNaKnmELcroETynniPuZbvOjh7~U8nnkFqlSa2GgiExabZ6gBPukWAe-~i2wJD4IgdDpulU7EVMl62oyL~L5mjZQPKnm-pc7g~2PBuhVhEZBbuhQGQ4bx5ituD9UYVv7FcXFDRXJW-AQ4wnA1TDsfImEhjEJYPSjcdkQJNrGHCZeSSjfkD-FatrilsxTNgKUg1J4WsMg375jzVbADfeueijOBUI364Yg__'),
+              Assets.imageFavoritiesStoreImageone),
           _buildHeader(
             title: "You May Also Like",
             actionText: "",
@@ -57,8 +59,60 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           _buildBestsellerListView(),
         ],
       )),
+      bottomSheet: Container(
+        color: AppColor.transparent,
+        child: TextButton.icon(
+          onPressed: () {},
+          label: Text(
+            "Add to bag",
+            style: textMedium.copyWith(color: AppColor.white, fontSize: 18.spMin),
+          ),
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(AppColor.black),
+            minimumSize: WidgetStateProperty.all(Size(double.infinity, 50.h)),
+          ),
+          icon: SvgPicture.asset(
+            Assets.imageAddTocart,
+            color: AppColor.white,
+            height: 25.h,
+            width: 25.w,
+          ),
+        ).wrapPaddingSymmetric(horizontal: 15.w,vertical: 15.h),
+      ),
     );
   }
+}
+
+
+void showCustomBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent, // Make the bottom sheet background transparent
+    builder: (context) => Container(
+      decoration: BoxDecoration(
+        color: Colors.black, // Set your desired background color for the content
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)), // Optional: add rounded corners
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h), // Padding for the content
+      child: TextButton.icon(
+        onPressed: () {},
+        label: Text(
+          "Add to bag",
+          style: textMedium.copyWith(color: AppColor.white, fontSize: 18.spMin),
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(AppColor.black),
+          minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.h)),
+        ),
+        icon: SvgPicture.asset(
+          Assets.imageAddTocart,
+          color: AppColor.white,
+          height: 25.h,
+          width: 25.w,
+        ),
+      ),
+    ),
+  );
 }
 
 ///app bar custom
@@ -66,7 +120,8 @@ AppBar _buildAppBar() {
   return AppBar(
     leading: IconButton(
       icon: const Icon(
-        Icons.arrow_back_ios_new_outlined,size: 20,
+        Icons.arrow_back_ios_new_outlined,
+        size: 20,
         color: AppColor.black,
       ),
       onPressed: () => appRouter.pop(),
@@ -142,148 +197,25 @@ Widget _buildBestsellerListView() {
     child: ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 15.r),
       scrollDirection: Axis.horizontal,
-      itemCount: bestSellerImageUrls.length,
+      itemCount: productsList.length,
       separatorBuilder: (BuildContext context, int index) {
         return SizedBox(width: 15.w);
       },
       itemBuilder: (BuildContext context, int index) {
-        return bestsellerCustomStack(
-            imagePath: bestSellerImageUrls[index], title: '');
+        return BestsellerStackWidget(
+          imagePath: productsList[index].imagePath,
+          title: productsList[index].productTitle,
+          discountPercentage: productsList[index].discount,
+          isFavorite: productsList[index].favorite,
+          currentPrice: productsList[index].afterDiscountPrice,
+          originalPrice: productsList[index].realPrice,
+        );
       },
     ),
   );
 }
 
-Widget bestsellerCustomStack(
-    {required String imagePath, required String title}) {
-  return Observer(builder: (context) {
-    return Container(
-      width: 140.w,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: [
-              AppImage(
-                  assets: imagePath,
-                  height: 158.h,
-                  width: 130.w,
-                  radius: 5.r,
-                  boxFit: BoxFit.cover,
-                  placeHolder: buildShimmerEffect(
-                      radius: 5.r, width: 130.w, height: 175.h)),
-              Positioned(
-                top: 10,
-                left: 0,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 3.r, vertical: 3.r),
-                  decoration: BoxDecoration(
-                      color: AppColor.neonPink,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(2.r),
-                          bottomRight: Radius.circular(2.r))),
-                  child: Text(
-                    "30% Off",
-                    style: textMedium.copyWith(
-                        fontSize: 8.spMin, color: AppColor.white),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 8,
-                right: 5,
-                child: InkWell(
-                  onTap: () {
-                    authStore.setIsFavorite();
-                  },
-                  child: Container(
-                      padding: EdgeInsets.all(8.r),
-                      decoration: BoxDecoration(
-                          color: AppColor.white, shape: BoxShape.circle),
-                      child: authStore.isFavorite
-                          ? Image(image: AssetImage(Assets.imageBlackHeart))
-                          : Image(
-                              image: AssetImage(Assets.imagePinkHeart),
-                              height: 12.h,
-                              width: 12.w,
-                              fit: BoxFit.contain,
-                            )),
-                ),
-              ),
-            ],
-          ),
-          6.verticalSpace,
-          Text("Loose Textured T-Shirt"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image(
-                image: AssetImage(Assets.imageStar),
-                height: 12.h,
-                width: 12.w,
-                fit: BoxFit.contain,
-              ),
-              5.horizontalSpace,
-              Text(
-                "4.5",
-                style: textMedium.copyWith(
-                    color: AppColor.black, fontSize: 12.spMin),
-              ),
-              Text(
-                " | 256",
-                style: textRegular.copyWith(
-                  color: AppColor.grey,
-                  fontSize: 12.spMin,
-                ),
-              ),
-            ],
-          ),
-          5.verticalSpace,
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 6.r),
-            decoration: BoxDecoration(
-                color: AppColor.mercury.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(2.r)),
-            child: Text(
-              "Free Shipping",
-              style:
-                  textMedium.copyWith(fontSize: 10.spMin, color: AppColor.grey),
-            ),
-          ),
-          5.verticalSpace,
-          Row(
-            children: [
-              Text(
-                "\$119.99",
-                style: textMedium.copyWith(
-                  color: AppColor.black,
-                  fontSize: 12.spMin,
-                ),
-              ),
-              5.horizontalSpace,
-              Text(
-                "\$159.99",
-                style: textRegular.copyWith(
-                    decoration: TextDecoration.lineThrough,
-                    color: AppColor.grey,
-                    fontSize: 12.spMin),
-              ),
-              Spacer(),
-              SvgPicture.asset(
-                Assets.imageAddTocart,
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  });
-}
+
 
 ///buyer's most love
 
@@ -297,7 +229,7 @@ Widget theNewStore({required String imageUrl}) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppImage(
-          url: imageUrl,
+          assets: imageUrl,
           height: 54.h,
           width: 54.w,
           boxFit: BoxFit.fill,
@@ -312,9 +244,14 @@ Widget theNewStore({required String imageUrl}) {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "The New Store",
-              style: textSemiBold,
+            GestureDetector(
+              onTap: () {
+                appRouter.push(StoreDetailsRoute());
+              },
+              child: Text(
+                "The New Store",
+                style: textSemiBold,
+              ),
             ),
             5.verticalSpace,
             Row(
@@ -361,7 +298,7 @@ Widget theNewStore({required String imageUrl}) {
             borderRadius: BorderRadius.circular(5.r),
           ),
           child: Text(
-            "SEND a message",
+            "Send a message",
             style: textMedium.copyWith(
               fontSize: 10.spMin,
               color: AppColor.white,
@@ -381,24 +318,22 @@ Widget _buildDeliveryMenus() {
       Row(
         children: [
           Image(image: AssetImage('assets/image/delivery.png')),
-          Flexible(
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                      text: 'Free Delivery  ',
-                      style: textRegular.copyWith(
-                          color: AppColor.black, fontSize: 12.spMin)),
-                  TextSpan(
-                      text: '| Estimated Delivery',
-                      style: textRegular.copyWith(
-                          color: AppColor.grey, fontSize: 12.spMin)),
-                  TextSpan(
-                      text: ' 2-3 Days',
-                      style: textRegular.copyWith(
-                          color: AppColor.black, fontSize: 12.spMin)),
-                ],
-              ),
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                    text: 'Free Delivery  ',
+                    style: textRegular.copyWith(
+                        color: AppColor.black, fontSize: 12.spMin)),
+                TextSpan(
+                    text: '| Estimated Delivery',
+                    style: textRegular.copyWith(
+                        color: AppColor.grey, fontSize: 12.spMin)),
+                TextSpan(
+                    text: ' 2-3 Days',
+                    style: textRegular.copyWith(
+                        color: AppColor.black, fontSize: 12.spMin)),
+              ],
             ),
           ).wrapPaddingOnly(left: 12.w),
         ],
@@ -514,7 +449,11 @@ Widget _buildImageview() {
                       fontSize: 10.spMin, color: AppColor.green),
                 ),
               ),
-              Text("Denim",style: textRegular.copyWith(color: AppColor.grey,fontSize: 14.sp),),
+              Text(
+                "Denim",
+                style:
+                    textRegular.copyWith(color: AppColor.grey, fontSize: 14.sp),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -586,6 +525,7 @@ Widget _buildImageview() {
                         TextSpan(
                             text: '\$159.99',
                             style: textRegular.copyWith(
+                              decoration: TextDecoration.lineThrough,
                                 color: AppColor.grey, fontSize: 16.spMin)),
                         WidgetSpan(
                           child: SizedBox(width: 8.w),
@@ -619,21 +559,20 @@ Widget _buildImageview() {
           ).wrapPaddingSymmetric(horizontal: 15.w)
         ],
       ),
-      Divider(
-        color: AppColor.black,
-        indent: 3
-
-      ),
+      Divider(color: AppColor.black, indent: 3),
       Row(
         children: [
-          SvgPicture.asset(Assets.assetsImageLike,color: AppColor.black,),
+          SvgPicture.asset(
+            Assets.assetsImageLike,
+            color: AppColor.black,
+          ),
           10.horizontalSpace,
           Text(
             "26",
             style: textRegular.copyWith(fontSize: 14.spMin),
           ),
           25.horizontalSpace,
-          SvgPicture.asset(Assets.assetsImageChat),
+          SvgPicture.asset(Assets.imageChat),
           10.horizontalSpace,
           Text(
             "30",
@@ -642,16 +581,11 @@ Widget _buildImageview() {
           30.horizontalSpace,
           SvgPicture.asset(Assets.assetsImageSend),
           Spacer(),
-        SvgPicture.asset(Assets.imageAddUser)
+          SvgPicture.asset(Assets.imageAddUser)
         ],
       ).wrapPaddingSymmetric(horizontal: 15.w, vertical: 8.h),
-      Divider(
-          color: AppColor.black,
-          indent: 3
-
-      ),
+      Divider(color: AppColor.black, indent: 3),
       _buildColorAndSize(),
-      
     ],
   );
 }
@@ -670,59 +604,62 @@ final List<String> size = [
   "XXL",
 ];
 
-
 Widget _buildColorAndSize() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text("Color:",
-        style: textRegular.copyWith(color: AppColor.black,
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w400),),
+      Text(
+        "Color:",
+        style: textRegular.copyWith(
+            color: AppColor.black,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400),
+      ),
       10.verticalSpace,
       SizedBox(
-        height: 35.h,
+        height: 32.h,
         child: ListView.separated(
-          padding: EdgeInsets.symmetric(vertical: 2.h),
-          shrinkWrap: true,
-  scrollDirection: Axis.horizontal,itemBuilder: (context, index) {
-          return Container(
-            padding: EdgeInsets.all(5.w),
-            height: 35,
-            width: 35,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(1.r),
-                color: AppColor.white,
-                boxShadow: [
-                  BoxShadow(color: AppColor.grey,
-                  blurRadius: 3.r)
-
-                ],
-                border: Border.all(width: 1,color: AppColor.grey),
-            ),
-            child: Container(
-              height: 25,
-              width: 25,
-              decoration: BoxDecoration(
+            padding: EdgeInsets.symmetric(vertical: 2.h),
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Container(
+                padding: EdgeInsets.all(5.w),
+                height: 35,
+                width: 35,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(1.r),
-                  color: colors[index],
-
-              ),
-            ),
-          );
-        }, separatorBuilder: (context, index) {
-          return SizedBox(
-            width: 10.w,
-          );
-        }, itemCount: colors.length),
+                  color: AppColor.white,
+                  boxShadow: [BoxShadow(color: AppColor.grey, blurRadius: 3.r)],
+                  border: Border.all(width: 1, color: AppColor.grey),
+                ),
+                child: Container(
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(1.r),
+                    color: colors[index],
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(
+                width: 10.w,
+              );
+            },
+            itemCount: colors.length),
       ),
       10.verticalSpace,
       Row(
         children: [
-          Text("Size",
-            style: textRegular.copyWith(color: AppColor.black,
+          Text(
+            "Size",
+            style: textRegular.copyWith(
+                color: AppColor.black,
                 fontSize: 16.sp,
-                fontWeight: FontWeight.w400),),
+                fontWeight: FontWeight.w400),
+          ),
         ],
       ),
       10.verticalSpace,
@@ -731,28 +668,71 @@ Widget _buildColorAndSize() {
         child: ListView.separated(
             padding: EdgeInsets.symmetric(vertical: 2.h),
             shrinkWrap: true,
-            scrollDirection: Axis.horizontal,itemBuilder: (context, index) {
-          return Container(
-            alignment: Alignment.center,
-            height: 35,
-            width: 35,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(1.r),
-                color: AppColor.white,
-                border: Border.all(width: 1,color: AppColor.black)
-            ),
-            child: Text(size[index],style: textRegular.copyWith(color: AppColor.grey),)
-          );
-        }, separatorBuilder: (context, index) {
-          return SizedBox(
-            width: 10.w,
-          );
-        }, itemCount: size.length),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Container(
+                  alignment: Alignment.center,
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(1.r),
+                      color: AppColor.white,
+                      border: Border.all(width: 1, color: AppColor.black)),
+                  child: Text(
+                    size[index],
+                    style: textRegular.copyWith(color: AppColor.grey),
+                  ));
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(
+                width: 10.w,
+              );
+            },
+            itemCount: size.length),
       ),
 
-      AppButton(height:55.h ,"Add to cart", () {
+      10.verticalSpace,
+      Text(
+        "Description",
+        style: textRegular.copyWith(
+            color: AppColor.black,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w400),
+      ),
+      10.verticalSpace,
+      ReadMoreText(
+          'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using , making it look like readable English Flutter(https://flutter.dev/) has its own UI components, along with an engine to render thFlutter(https://flutter.dev/) has its own UI components, along with an engine to render thFlutter(https://flutter.dev/) has its own UI components, along with an engine to render thFlutter(https://flutter.dev/) has its own UI components, along with an engine to render them on both the <@123> and <@456> platforms <@999> http://google.com #read_more. Most of those UI components, right out of the box, conform to the guidelines of #Material Design.',
+          trimMode: TrimMode.Line,
+          trimLines: 5,
+          trimLength: 500,
+          style: const TextStyle(color: Colors.grey),
+          colorClickableText: Colors.black,
+          lessStyle: textMedium.copyWith(color: AppColor.black),
+          moreStyle: textMedium.copyWith(color: AppColor.black),
 
-      },)
+          trimCollapsedText: '..show More',
+          trimExpandedText: ' show Less ',
+          annotations: [
+            // URL
+            Annotation(
+              regExp: RegExp(
+                r'(?:(?:https?|ftp)://)?[\w/\-?=%.]+\.[\w/\-?=%.]+',
+              ),
+              spanBuilder: ({
+                required String text,
+                TextStyle? textStyle,
+              }) {
+                return TextSpan(
+                  text: text,
+                  style: (textStyle ?? const TextStyle()).copyWith(
+                    decoration: TextDecoration.underline,
+                    color: Colors.green,
+                  ),
+                );
+              },
+            ),
+          ]),
+      10.verticalSpace,
     ],
   ).wrapPaddingSymmetric(horizontal: 15.w);
 }

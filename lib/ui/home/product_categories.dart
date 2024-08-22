@@ -5,7 +5,6 @@ import 'package:trendify/router/app_router.dart';
 import 'package:trendify/ui/auth/store/auth_store.dart';
 import 'package:trendify/values/colors.dart';
 import 'package:trendify/values/style.dart';
-import 'package:trendify/widget/button_widget.dart';
 import 'package:trendify/widget/button_widget_inverse.dart';
 
 class CategoryDetailScreen extends StatelessWidget {

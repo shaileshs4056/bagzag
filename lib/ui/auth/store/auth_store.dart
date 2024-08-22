@@ -8,6 +8,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uuid/uuid.dart';
@@ -62,7 +63,10 @@ abstract class _AuthStoreBase with Store {
   void setIsCheck() {
     isCheck = !isCheck;
   }
-
+  @action
+  String getCurrentTime() {
+    return DateFormat('hh:mm a').format(DateTime.now());
+  }
   @action
   Future login(LoginRequestModel request) async {
     try {

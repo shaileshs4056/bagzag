@@ -2,10 +2,11 @@
 class Assets {
   Assets._();
 
-  static const String assetsImageChat = 'assets/image/Chat.svg';
+  static const String assetsImageCart = 'assets/image/cart.svg';
   static const String assetsImageFilter = 'assets/image/Filter.svg';
   static const String assetsImageLike = 'assets/image/like.svg';
   static const String assetsImageSend = 'assets/image/Send.svg';
+  static const String assetsImageStar = 'assets/image/Star.svg';
   static const String fontsRotundaBold = 'assets/fonts/Rotunda-Bold.otf';
   static const String imageAddTocart = 'assets/image/addTocart.svg';
   static const String imageAddUser = 'assets/image/AddUser.svg';
@@ -27,8 +28,10 @@ class Assets {
   static const String imageBrowsecategoriessports = 'assets/image/browsecategoriessports.png';
   static const String imageBrowsecategoriestoyand = 'assets/image/browsecategoriestoyand.png';
   static const String imageBrowsecategoriestwoman = 'assets/image/browsecategoriestwoman.png';
+  static const String imageCalendar = 'assets/image/Calendar.svg';
   static const String imageCart = 'assets/image/cart.png';
-  static const String imageChat = 'assets/image/Chat.png';
+  static const String imageChat = 'assets/image/Chat.svg';
+  static const String imageComment = 'assets/image/comment.png';
   static const String imageDelivery = 'assets/image/delivery.png';
   static const String imageEdit = 'assets/image/edit.png';
   static const String imageFacebook = 'assets/image/facebook.png';
@@ -48,11 +51,15 @@ class Assets {
   static const String imageHomeandliving = 'assets/image/homeandliving.png';
   static const String imageKids = 'assets/image/kids.png';
   static const String imageLike = 'assets/image/like.png';
+  static const String imageLocation = 'assets/image/Location.svg';
   static const String imageLogo = 'assets/image/Logo.png';
   static const String imageMe = 'assets/image/me.png';
   static const String imageMen = 'assets/image/men.png';
   static const String imageMessage = 'assets/image/Message.png';
   static const String imageNoreturn = 'assets/image/noreturn.png';
+  static const String imageNotifactionone = 'assets/image/notifactionone.png';
+  static const String imageNotifactionthree = 'assets/image/notifactionthree.png';
+  static const String imageNotifactiontwo = 'assets/image/notifactiontwo.png';
   static const String imageNotification = 'assets/image/notification.png';
   static const String imagePageview21 = 'assets/image/pageview_2_1.png';
   static const String imagePageview22 = 'assets/image/pageview_2_2.png';
@@ -63,6 +70,7 @@ class Assets {
   static const String imagePexelsAliPazani2 = 'assets/image/pexels-ali-pazani2.png';
   static const String imagePexelsGabbTapique3 = 'assets/image/pexels-gabb-tapique3.png';
   static const String imagePinkHeart = 'assets/image/pink_heart.png';
+  static const String imageRatingUserimage = 'assets/image/ratingUserimage.png';
   static const String imageRecentlyviewimagfour = 'assets/image/recentlyviewimagfour.png';
   static const String imageRecentlyviewimagone = 'assets/image/recentlyviewimagone.png';
   static const String imageRecentlyviewimagthree = 'assets/image/recentlyviewimagthree.png';
@@ -76,6 +84,7 @@ class Assets {
   static const String imageStar = 'assets/image/Star.png';
   static const String imageStudio = 'assets/image/studio.png';
   static const String imageTickSquare = 'assets/image/TickSquare.png';
+  static const String imageTimeCircle = 'assets/image/TimeCircle.svg';
   static const String imageToysandbaby = 'assets/image/toysandbaby.png';
   static const String imageUser = 'assets/image/user.png';
   static const String imageWomen = 'assets/image/women.png';

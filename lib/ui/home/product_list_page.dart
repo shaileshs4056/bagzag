@@ -8,6 +8,7 @@ import 'package:trendify/router/app_router.dart';
 import 'package:trendify/ui/auth/store/auth_store.dart';
 import 'package:trendify/ui/home/home_page.dart';
 import 'package:trendify/ui/home/product_categories.dart';
+import 'package:trendify/ui/home/widget/product_list_widget.dart';
 import 'package:trendify/values/colors.dart';
 import 'package:trendify/values/style.dart';
 import 'package:trendify/widget/app_image.dart';
@@ -19,88 +20,89 @@ class ProductListPage extends StatefulWidget {
   State<ProductListPage> createState() => _ProductListPageState();
 }
 
+Map<String, List<Map<String, dynamic>>> filterMenuMap = {
+  'Categories': [
+    {'Type': 'Women (10)', 'isVisible': false},
+    {'Type': 'Kids (15)', 'isVisible': false},
+    {'Type': 'Beauty (20)', 'isVisible': false},
+    {'Type': 'Home & Living (20)', 'isVisible': false},
+    {'Type': 'Cameras & Photo (20)', 'isVisible': false},
+    {'Type': 'Shoes & Accessories (20)', 'isVisible': false},
+  ],
+  'Subcategories': [
+    {'Type': 'Watcher', 'isVisible': true},
+    {'Type': 'Inner Wear', 'isVisible': true},
+    {'Type': 'Footwear', 'isVisible': true},
+  ],
+  'Brand': [
+    {'Type': 'Brand 2', 'isVisible': true},
+    {'Type': 'Brand 3', 'isVisible': true},
+    {'Type': 'Brand 4', 'isVisible': true},
+  ],
+  'Size': [
+    {'Type': 'Regular', 'isVisible': true},
+    {'Type': 'Not Specified', 'isVisible': true},
+  ],
+  'Color': [
+    {'Type': 'Red', 'isVisible': true},
+    {'Type': 'Blue', 'isVisible': true},
+    {'Type': 'Green', 'isVisible': true},
+    {'Type': 'Black', 'isVisible': true},
+    {'Type': 'White', 'isVisible': true},
+    {'Type': 'Red', 'isVisible': true},
+    {'Type': 'Blue', 'isVisible': true},
+    {'Type': 'Green', 'isVisible': true},
+    {'Type': 'Black', 'isVisible': true},
+    {'Type': 'White', 'isVisible': true},
+    {'Type': 'Red', 'isVisible': true},
+    {'Type': 'Blue', 'isVisible': true},
+    {'Type': 'Green', 'isVisible': true},
+    {'Type': 'Black', 'isVisible': true},
+    {'Type': 'White', 'isVisible': true},
+    {'Type': 'Red', 'isVisible': true},
+    {'Type': 'Blue', 'isVisible': true},
+    {'Type': 'Green', 'isVisible': true},
+    {'Type': 'Black', 'isVisible': true},
+    {'Type': 'White', 'isVisible': true},
+  ],
+  'Price Range': [
+    {'Type': 'Under \$15.00', 'isVisible': true},
+    {'Type': '\$15.00 to \$35.00', 'isVisible': true},
+    {'Type': '\$100 -', 'isVisible': true},
+    {'Type': 'Over \$35.00', 'isVisible': true},
+    {'Type': 'Custom', 'isVisible': true},
+  ],
+  'Offer Range': [
+    {'Type': '10% Off', 'isVisible': true},
+    {'Type': '20% Off', 'isVisible': true},
+    {'Type': '30% Off', 'isVisible': true},
+    {'Type': 'Buy 1 Get 1 Free', 'isVisible': true},
+    {'Type': 'Seasonal Sale', 'isVisible': true},
+  ],
+  'Delivery Type': [
+    {'Type': 'Standard Shipping', 'isVisible': true},
+    {'Type': 'Express Shipping', 'isVisible': true},
+    {'Type': 'Same Day Delivery', 'isVisible': true},
+    {'Type': 'Free Shipping', 'isVisible': true},
+    {'Type': 'In-Store Pickup', 'isVisible': true},
+  ],
+  'Store Location': [
+    {'Type': '10 To 15 Mi', 'isVisible': true},
+    {'Type': '15 To 35 Mi', 'isVisible': true},
+    {'Type': 'Over 34', 'isVisible': true},
+  ],
+  'Condition': [
+    {'Type': 'New', 'isVisible': true},
+    {'Type': 'Used', 'isVisible': true},
+    {'Type': 'Refurbished', 'isVisible': true},
+    {'Type': 'Open Box', 'isVisible': true},
+    {'Type': 'Pre-Owned', 'isVisible': true},
+  ],
+};
 class _ProductListPageState extends State<ProductListPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Map<String, List<Map<String, dynamic>>> filterMenuMap = {
-    'Categories': [
-      {'Type': 'Women (10)', 'isVisible': false},
-      {'Type': 'Kids (15)', 'isVisible': false},
-      {'Type': 'Beauty (20)', 'isVisible': false},
-      {'Type': 'Home & Living (20)', 'isVisible': false},
-      {'Type': 'Cameras & Photo (20)', 'isVisible': false},
-      {'Type': 'Shoes & Accessories (20)', 'isVisible': false},
-    ],
-    'Subcategories': [
-      {'Type': 'Watcher', 'isVisible': true},
-      {'Type': 'Inner Wear', 'isVisible': true},
-      {'Type': 'Footwear', 'isVisible': true},
-    ],
-    'Brand': [
-      {'Type': 'Brand 2', 'isVisible': true},
-      {'Type': 'Brand 3', 'isVisible': true},
-      {'Type': 'Brand 4', 'isVisible': true},
-    ],
-    'Size': [
-      {'Type': 'Regular', 'isVisible': true},
-      {'Type': 'Not Specified', 'isVisible': true},
-    ],
-    'Color': [
-      {'Type': 'Red', 'isVisible': true},
-      {'Type': 'Blue', 'isVisible': true},
-      {'Type': 'Green', 'isVisible': true},
-      {'Type': 'Black', 'isVisible': true},
-      {'Type': 'White', 'isVisible': true},
-      {'Type': 'Red', 'isVisible': true},
-      {'Type': 'Blue', 'isVisible': true},
-      {'Type': 'Green', 'isVisible': true},
-      {'Type': 'Black', 'isVisible': true},
-      {'Type': 'White', 'isVisible': true},
-      {'Type': 'Red', 'isVisible': true},
-      {'Type': 'Blue', 'isVisible': true},
-      {'Type': 'Green', 'isVisible': true},
-      {'Type': 'Black', 'isVisible': true},
-      {'Type': 'White', 'isVisible': true},
-      {'Type': 'Red', 'isVisible': true},
-      {'Type': 'Blue', 'isVisible': true},
-      {'Type': 'Green', 'isVisible': true},
-      {'Type': 'Black', 'isVisible': true},
-      {'Type': 'White', 'isVisible': true},
-    ],
-    'Price Range': [
-      {'Type': 'Under \$15.00', 'isVisible': true},
-      {'Type': '\$15.00 to \$35.00', 'isVisible': true},
-      {'Type': '\$100 -', 'isVisible': true},
-      {'Type': 'Over \$35.00', 'isVisible': true},
-      {'Type': 'Custom', 'isVisible': true},
-    ],
-    'Offer Range': [
-      {'Type': '10% Off', 'isVisible': true},
-      {'Type': '20% Off', 'isVisible': true},
-      {'Type': '30% Off', 'isVisible': true},
-      {'Type': 'Buy 1 Get 1 Free', 'isVisible': true},
-      {'Type': 'Seasonal Sale', 'isVisible': true},
-    ],
-    'Delivery Type': [
-      {'Type': 'Standard Shipping', 'isVisible': true},
-      {'Type': 'Express Shipping', 'isVisible': true},
-      {'Type': 'Same Day Delivery', 'isVisible': true},
-      {'Type': 'Free Shipping', 'isVisible': true},
-      {'Type': 'In-Store Pickup', 'isVisible': true},
-    ],
-    'Store Location': [
-      {'Type': '10 To 15 Mi', 'isVisible': true},
-      {'Type': '15 To 35 Mi', 'isVisible': true},
-      {'Type': 'Over 34', 'isVisible': true},
-    ],
-    'Condition': [
-      {'Type': 'New', 'isVisible': true},
-      {'Type': 'Used', 'isVisible': true},
-      {'Type': 'Refurbished', 'isVisible': true},
-      {'Type': 'Open Box', 'isVisible': true},
-      {'Type': 'Pre-Owned', 'isVisible': true},
-    ],
-  };
+
 
   @override
   Widget build(BuildContext context) {
@@ -109,110 +111,11 @@ class _ProductListPageState extends State<ProductListPage> {
         appBar: _buildAppBar(),
         body: Column(
           children: [
-            Expanded(child: _buildFavouritesProductGrid()),
+            Expanded(child: ProductListWidget(),),
           ],
         ),
-        endDrawer: Drawer(
-          child: Navigator(
-            onGenerateRoute: (settings) {
-              return MaterialPageRoute(
-                builder: (context) => Scaffold(
-                  backgroundColor: AppColor.white,
-                  appBar: AppBar(
-                    excludeHeaderSemantics: false,
-                    shadowColor: AppColor.white,
-                    backgroundColor: AppColor.white,
-                    elevation: 0,
-                    title: Text(
-                      "Filter",
-                      style: textMedium.copyWith(color: AppColor.black),
-                    ),
-                    actions: [
-                      GestureDetector(
-                          onTap: () {},
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 15, right: 15).r,
-                            child: Text(
-                              'Done',
-                              textAlign: TextAlign.center,
-                              style:
-                                  textMedium.copyWith(color: AppColor.neonPink),
-                            ),
-                          )),
-                    ],
-                  ),
-                  body: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Column(
-                            children: List.generate(
-                          filterMenuMap.length,
-                          (index) => Column(
-                            children: [
-                              ListTile(
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 15.w, vertical: 0),
-                                title: Text(
-                                  "${filterMenuMap.keys.elementAt(index)}",
-                                  style: textRegular.copyWith(
-                                      color: AppColor.black),
-                                ),
-                                trailing: Text(
-                                  "Any",
-                                  style: textRegular.copyWith(
-                                      color: AppColor.grey),
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CategoryDetailScreen(
-                                          category: filterMenuMap.keys
-                                              .elementAt(index),
-                                          items: filterMenuMap.values
-                                              .elementAt(index)
-                                              .toList(),
-                                        ),
-                                      ));
-                                },
-                              ),
-                              Divider(
-                                color: AppColor.black,
-                              ),
-                            ],
-                          ),
-                        )),
-                        // Add more items here
-                      ],
-                    ),
-                  ),
-                  bottomNavigationBar: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 23.h, horizontal: 15.w),
-                    child: AppButtonInverse(
-                      width: 1.sw,
-                      height: 51.h,
-                      fontSize: 16.sp,
-                      fontWight: FontWeight.w500,
-                      radius: 5.r,
-                      'Clear Filter',
-                      textColor: AppColor.black,
-                      () {
-                        appRouter.pop();
-                      },
-                      buttonColor: AppColor.white,
-                      borderColor: AppColor.black,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ));
+        endDrawer: buildFilterDrawer(context));
   }
-
   AppBar _buildAppBar() {
     return AppBar(
       leading: IconButton(
@@ -282,7 +185,7 @@ class _ProductListPageState extends State<ProductListPage> {
           _scaffoldKey.currentState?.openEndDrawer();
         },
         child: _buildButton(
-          'assets/image/Filter.png',
+          Assets.imageFilter,
           'Filter',
         ),
       ),
@@ -385,193 +288,6 @@ class _ProductListPageState extends State<ProductListPage> {
       ),
     );
   }
-}
-
-Widget _buildFavouritesProductGrid() {
-  return GridView.builder(
-    itemCount: favoritesPageImages.length,
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      mainAxisExtent: 272.h,
-      crossAxisSpacing: 2,
-      mainAxisSpacing: 2,
-      crossAxisCount: 2,
-    ),
-    shrinkWrap: true,
-    physics: BouncingScrollPhysics(),
-    clipBehavior: Clip.none,
-    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
-    itemBuilder: (context, index) {
-      return _buildFavouritesProductCard(index);
-    },
-  );
-}
-
-List<String> favoritesPageImages = [
-  Assets.imageFavproductone,
-  Assets.imageFavproducttwo,
-  Assets.imageFavproductthree,
-  Assets.imageFavproductfour,
-  Assets.imageFavproductone,
-  Assets.imageFavproducttwo,
-  Assets.imageFavproductthree,
-  Assets.imageFavproductfour,
-];
-
-Widget _buildFavouritesProductCard(int index) {
-  return GestureDetector(
-    onTap: () {
-      appRouter.push(ProductDetailsRoute());
-    },
-    child: Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(8.r),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.topLeft,
-            children: [
-              AppImage(
-                assets: favoritesPageImages[index],
-                height: 139.h,
-                width: 169.w,
-                radius: 5.r,
-                placeHolder: buildShimmerEffect(
-                    radius: 5.r, width: 134.w, height: 169.h),
-              ),
-              if (index % 2 == 0) _buildDiscountTag(),
-              Positioned(
-                top: 8,
-                right: 10.w,
-                child: _buildFavoriteButton(),
-              ),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          _buildProductDetails(),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget _buildDiscountTag() {
-  return Positioned(
-    top: 10,
-    left: 0,
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 3.r, vertical: 3.r),
-      decoration: BoxDecoration(
-        color: AppColor.neonPink,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(2.r),
-          bottomRight: Radius.circular(2.r),
-        ),
-      ),
-      child: Text(
-        "30% Off",
-        style: textMedium.copyWith(fontSize: 8.spMin, color: AppColor.white),
-      ),
-    ),
-  );
-}
-
-Widget _buildFavoriteButton() {
-  return InkWell(
-    onTap: () {
-      authStore.setIsFavorite();
-    },
-    child: Observer(builder: (context) {
-      return Container(
-        padding: EdgeInsets.all(8.r),
-        decoration: const BoxDecoration(
-          color: AppColor.mercury,
-          shape: BoxShape.circle,
-        ),
-        child: Image.asset(
-          authStore.isFavorite ? Assets.imageBlackHeart : Assets.imagePinkHeart,
-          height: 12.h,
-          width: 12.w,
-          fit: BoxFit.contain,
-        ),
-      );
-    }),
-  );
-}
-
-Widget _buildProductDetails() {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 8.r),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text("Loose Textured T-Shirt"),
-        SizedBox(height: 5.h),
-        Row(
-          children: [
-            Image.asset(
-              Assets.imageStar,
-              height: 12.h,
-              width: 12.w,
-              fit: BoxFit.contain,
-            ),
-            SizedBox(width: 5.w),
-            Text(
-              "4.5",
-              style: textMedium.copyWith(
-                  color: AppColor.black, fontSize: 12.spMin),
-            ),
-            Text(
-              " | 256",
-              style: textRegular.copyWith(
-                  color: AppColor.grey, fontSize: 12.spMin),
-            ),
-          ],
-        ),
-        SizedBox(height: 8.h),
-        _buildFreeShippingTag(),
-        SizedBox(height: 7.h),
-        _buildPriceAndCart(),
-      ],
-    ),
-  );
-}
-
-Widget _buildFreeShippingTag() {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 6.r),
-    decoration: BoxDecoration(
-      color: AppColor.mercury.withOpacity(0.5),
-      borderRadius: BorderRadius.circular(2.r),
-    ),
-    child: Text(
-      "Free Shipping",
-      style: textMedium.copyWith(fontSize: 10.spMin, color: AppColor.grey),
-    ),
-  );
-}
-
-Widget _buildPriceAndCart() {
-  return Row(
-    children: [
-      Text(
-        "\$119.99",
-        style: textMedium.copyWith(color: AppColor.black, fontSize: 12.spMin),
-      ),
-      SizedBox(width: 5.w),
-      Text(
-        "\$159.99",
-        style: textRegular.copyWith(
-          decoration: TextDecoration.lineThrough,
-          color: AppColor.grey,
-          fontSize: 12.spMin,
-        ),
-      ),
-      Spacer(),
-      SvgPicture.asset(Assets.imageAddTocart),
-    ],
-  );
 }
 
 Widget buildMainDrawerContent(BuildContext context) {
@@ -707,6 +423,108 @@ Widget buildNestedDrawerContent(BuildContext context) {
         ),
         // Add more items here
       ],
+    ),
+  );
+}
+
+/// Builds the filter drawer with a nested Navigator.
+Widget buildFilterDrawer(BuildContext context) {
+  return Drawer(
+    child: Navigator(
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => Scaffold(
+            backgroundColor: AppColor.white,
+            appBar: AppBar(
+              excludeHeaderSemantics: false,
+              shadowColor: AppColor.white,
+              backgroundColor: AppColor.white,
+              elevation: 0,
+              title: Text(
+                "Filter",
+                style: textMedium.copyWith(color: AppColor.black),
+              ),
+              actions: [
+                GestureDetector(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15, right: 15).r,
+                    child: Text(
+                      'Done',
+                      textAlign: TextAlign.center,
+                      style: textMedium.copyWith(color: AppColor.neonPink),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Column(
+                    children: List.generate(
+                      filterMenuMap.length,
+                          (index) => Column(
+                        children: [
+                          // List tile for each filter option
+                          ListTile(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 0),
+                            title: Text(
+                              "${filterMenuMap.keys.elementAt(index)}",
+                              style: textRegular.copyWith(
+                                  color: AppColor.black),
+                            ),
+                            trailing: Text(
+                              "Any",
+                              style: textRegular.copyWith(
+                                  color: AppColor.grey),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CategoryDetailScreen(
+                                    category: filterMenuMap.keys.elementAt(index),
+                                    items: filterMenuMap.values
+                                        .elementAt(index)
+                                        .toList(),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          Divider(
+                            color: AppColor.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Add more items here if needed
+                ],
+              ),
+            ),
+            bottomNavigationBar: Padding(
+              padding: EdgeInsets.symmetric(vertical: 23.h, horizontal: 15.w),
+              child: AppButtonInverse(
+                width: 1.sw,
+                height: 51.h,
+                fontSize: 16.sp,
+                fontWight: FontWeight.w500,
+                radius: 5.r,
+                'Clear Filter',
+                textColor: AppColor.black,
+                    () {
+                  appRouter.pop();
+                },
+                buttonColor: AppColor.white,
+                borderColor: AppColor.black,
+              ),
+            ),
+          ),
+        );
+      },
     ),
   );
 }

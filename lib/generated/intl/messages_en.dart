@@ -200,6 +200,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Server not found"),
         "serverUnknownError":
             MessageLookupByLibrary.simpleMessage("Server unknown error"),
+        "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "signInWith": MessageLookupByLibrary.simpleMessage("Sign In With"),
         "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),
         "skip": MessageLookupByLibrary.simpleMessage("Skip"),
@@ -209,6 +210,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "somethingWhenWrongPleaseTryAgain":
             MessageLookupByLibrary.simpleMessage(
                 "Something when wrong. Please try again."),
+        "storeDetails": MessageLookupByLibrary.simpleMessage("Store Details"),
         "tNc": MessageLookupByLibrary.simpleMessage("Terms & Conditions"),
         "unauthorised": MessageLookupByLibrary.simpleMessage("Unauthorised:"),
         "unknownError": MessageLookupByLibrary.simpleMessage("Unknown error"),

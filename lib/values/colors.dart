@@ -18,6 +18,7 @@ abstract class AppColor {
   static const Color neonPink = Color(0xffF13AB1);
   static const Color santaGray = Color(0xff9FA2AA);
   static const Color green = Color(0xff219D2E);
+  static const Color brightYellow = Color(0xffFFB800);
 
   static const Color textBackgroundColor = Color(0xFFFFFFFF);
 
