@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../../data/model/response/product_details_responce.dart';
 import '../../../generated/assets.dart';
@@ -12,51 +13,55 @@ import '../../auth/store/auth_store.dart';
 import '../home_page.dart';
 
 
-List<Product> productsList = [
-  Product(
-    discount: 10.5,
-    favorite: ValueNotifier<bool>(true),
-    productTitle: 'Loose Textured T-Shirt',
-    totalDiscount: 15.99,
-    imagePath: Assets.imageBestsellerimagetwo,
-    afterDiscountPrice: 134.99,
-    realPrice: 150.98,
-  ),
-  Product(
-    discount: 25.0,
-    favorite: ValueNotifier<bool>(true),
-    productTitle: "Loose Textured T-Shirt",
-    totalDiscount: 50.0,
-    imagePath: Assets.imageBestsellerimageone,
-    afterDiscountPrice: 449.99,
-    realPrice: 499.99,
-  ),
-  Product(
-    discount: 10.00, // No discount applied
-    favorite: ValueNotifier<bool>(true),
-    productTitle: 'Loose Textured T-Shirt',
-    totalDiscount: 3,
-    imagePath: Assets.imageBestsellerimageone,
-    afterDiscountPrice: 29.99, // Price remains unchanged
-    realPrice: 29.99,
-  ),
-  Product(
-    discount: null, // No discount applied
-    favorite: ValueNotifier<bool>(true),
-    productTitle: 'Loose Textured T-Shirt',
-    totalDiscount: 3,
-    imagePath: Assets.imageBestsellerimageone,
-    afterDiscountPrice: 29.99, // Price remains unchanged
-    realPrice: null,
-  ),
-];
+//  authStore.productsList =  ObservableList.of([
+//   Product(
+//     discount: 10.5,
+//     favorite: ValueNotifier<bool>(true),
+//     productTitle: 'Loose Textured T-Shirt',
+//     totalDiscount: 15.99,
+//     imagePath: Assets.imageBestsellerimagetwo,
+//     realPrice: 150.98,
+//   ),
+//   Product(
+//     discount: 25.0,
+//     favorite: ValueNotifier<bool>(true),
+//     productTitle: "Loose Textured T-Shirt",
+//     totalDiscount: 50.0,
+//     imagePath: Assets.imageBestsellerimageone,
+//     realPrice: 499.99,
+//   ),
+//   Product(
+//     discount: 10.00, // No discount applied
+//     favorite: ValueNotifier<bool>(true),
+//     productTitle: 'Loose Textured T-Shirt',
+//     totalDiscount: 3,
+//     imagePath: Assets.imageBestsellerimageone, // Price remains unchanged
+//     realPrice: 29.99,
+//   ),
+//   Product(
+//     discount: null, // No discount applied
+//     favorite: ValueNotifier<bool>(true),
+//     productTitle: 'Loose Textured T-Shirt',
+//     totalDiscount: 3,
+//     imagePath: Assets.imageBestsellerimageone, // Price remains unchanged
+//     realPrice: 150,
+//   ),
+//   Product(
+//     discount: null, // No discount applied
+//     favorite: ValueNotifier<bool>(true),
+//     productTitle: 'Loose Textured T-Shirt',
+//     totalDiscount: 0,
+//     imagePath: Assets.imageFavproductone,
+//     realPrice: 00,
+//   ),
+// ];
 
 class BestsellerStackWidget extends StatelessWidget {
   final String? imagePath;
   final String? title;
   final double? discountPercentage;
   final ValueNotifier<bool>  isFavorite;
-  final double? currentPrice;
+  final num? totalDiscount;
   final double? originalPrice;
 
   BestsellerStackWidget({
@@ -64,7 +69,7 @@ class BestsellerStackWidget extends StatelessWidget {
      this.title,
      this.discountPercentage,
     required this.isFavorite,
-     this.currentPrice,
+     this.totalDiscount,
      this.originalPrice,
   });
 
@@ -144,13 +149,13 @@ class BestsellerStackWidget extends StatelessWidget {
                         ),
                         child: isFavorite.value
                             ? Image(
-                          image: AssetImage(Assets.imageBlackHeart),
+                          image: AssetImage(Assets.imagePinkHeart),
                           height: 12.h,
                           width: 12.w,
                           fit: BoxFit.contain,
                         )
                             : Image(
-                          image: AssetImage(Assets.imagePinkHeart),
+                          image: AssetImage(Assets.imageBlackHeart),
                           height: 12.h,
                           width: 12.w,
                           fit: BoxFit.contain,
@@ -209,15 +214,15 @@ class BestsellerStackWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '${currentPrice!}',
-                  style: textMedium.copyWith(
+            '\$${(originalPrice! - totalDiscount!).toStringAsFixed(2)}',
+      style: textMedium.copyWith(
                     color: AppColor.black,
                     fontSize: 12.spMin,
                   ),
                 ),
                 5.horizontalSpace,
                 originalPrice==null?SizedBox.shrink():Text(
-                  '${originalPrice!}',
+                  '\$${originalPrice!}',
                   style: textRegular.copyWith(
                     decoration: TextDecoration.lineThrough,
                     color: AppColor.grey,

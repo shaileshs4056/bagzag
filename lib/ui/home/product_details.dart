@@ -16,29 +16,27 @@ import 'package:trendify/values/extensions/widget_ext.dart';
 import 'package:trendify/values/style.dart';
 import 'package:trendify/widget/app_image.dart';
 
+import '../../data/model/response/product_details_responce.dart';
+
 @RoutePage()
 class ProductDetailsPage extends StatefulWidget {
+  final Product product;
+   ProductDetailsPage({super.key,required this.product});
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
-
-List<String> bestSellerImageUrls = [
-  Assets.imageBestsellerimagetwo,
-  Assets.imageBestsellerimageone,
-  Assets.imageBestsellerimageone,
-];
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.white,
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(widget.product),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
           child: Column(
         children: [
-          _buildImageview(),
+          _buildImageview(widget.product),
           _buildDeliveryMenus(),
           theNewStore(
               imageUrl:
@@ -83,6 +81,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
 }
 
+List<String> bestSellerImageUrls = [
+  Assets.imageBestsellerimagetwo,
+  Assets.imageBestsellerimageone,
+  Assets.imageBestsellerimageone,
+];
 
 void showCustomBottomSheet(BuildContext context) {
   showModalBottomSheet(
@@ -101,8 +104,8 @@ void showCustomBottomSheet(BuildContext context) {
           style: textMedium.copyWith(color: AppColor.white, fontSize: 18.spMin),
         ),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(AppColor.black),
-          minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.h)),
+          backgroundColor: WidgetStateProperty.all(AppColor.black),
+          minimumSize: WidgetStateProperty.all(Size(double.infinity, 50.h)),
         ),
         icon: SvgPicture.asset(
           Assets.imageAddTocart,
@@ -116,7 +119,7 @@ void showCustomBottomSheet(BuildContext context) {
 }
 
 ///app bar custom
-AppBar _buildAppBar() {
+AppBar _buildAppBar(Product product) {
   return AppBar(
     leading: IconButton(
       icon: const Icon(
@@ -141,14 +144,20 @@ AppBar _buildAppBar() {
           ),
         ),
       ),
-      InkWell(
-        onTap: () {},
-        child: Padding(
-          padding: EdgeInsets.only(right: 12.w),
-          child: Image.asset(
-            Assets.imageFavourite,
-            height: 24.h,
-            width: 24.w,
+      ValueListenableBuilder(
+        valueListenable: product.favorite,
+        builder: (context, value, child) => GestureDetector(
+          onTap: () {
+            product.favorite.value = !product.favorite.value;
+          },
+          child: Padding(
+            padding: EdgeInsets.only(right: 12.w),
+            child: Image.asset(
+              Assets.imageFavourite,
+               color: product.favorite.value==true?AppColor.neonPink:AppColor.black,
+              height: 24.h,
+              width: 24.w,
+            ),
           ),
         ),
       ),
@@ -197,18 +206,19 @@ Widget _buildBestsellerListView() {
     child: ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 15.r),
       scrollDirection: Axis.horizontal,
-      itemCount: productsList.length,
+      itemCount: authStore.favoriteProducts.length,
       separatorBuilder: (BuildContext context, int index) {
         return SizedBox(width: 15.w);
       },
       itemBuilder: (BuildContext context, int index) {
+        var data = authStore.favoriteProducts[index];
         return BestsellerStackWidget(
-          imagePath: productsList[index].imagePath,
-          title: productsList[index].productTitle,
-          discountPercentage: productsList[index].discount,
-          isFavorite: productsList[index].favorite,
-          currentPrice: productsList[index].afterDiscountPrice,
-          originalPrice: productsList[index].realPrice,
+          imagePath: data.imagePath,
+          title: data.productTitle,
+          discountPercentage: data.discount,
+          isFavorite: data.favorite,
+          totalDiscount: data.totalDiscount,
+          originalPrice: data.realPrice,
         );
       },
     ),
@@ -383,17 +393,7 @@ Widget _buildProductMenus({required String MenuTitle}) {
   ).wrapPaddingSymmetric(horizontal: 15.w, vertical: 5.h);
 }
 
-List<String> favoritesPageImages = [
-  Assets.imageFavproductone,
-  Assets.imageFavproducttwo,
-  Assets.imageFavproductthree,
-  Assets.imageFavproductfour,
-  Assets.imageFavproductone,
-  Assets.imageFavproducttwo,
-  Assets.imageFavproductthree,
-  Assets.imageFavproductfour,
-];
-Widget _buildImageview() {
+Widget _buildImageview(Product product) {
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -410,11 +410,11 @@ Widget _buildImageview() {
               itemBuilder: (context, index) {
                 return Container(
                   child: AppImage(
-                      assets: favoritesPageImages[index],
+                      assets: product.imagePath,
                       height: 240.h,
                       width: double.maxFinite,
                       radius: 5.r,
-                      boxFit: BoxFit.cover,
+                      boxFit: BoxFit.contain,
                       placeHolder: buildShimmerEffect(
                           radius: 5.r, width: 130.w, height: 175.h)),
                 ).wrapPaddingSymmetric(horizontal: 15);
@@ -459,7 +459,7 @@ Widget _buildImageview() {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Loose Textured T-Shirt",
+                    '${product.productTitle}',
                     style: textRegular.copyWith(),
                   ),
                   Spacer(),
@@ -516,14 +516,14 @@ Widget _buildImageview() {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                            text: '\$119.99',
+                            text: '\$${(product.realPrice!-product.totalDiscount!).toStringAsFixed(2)}',
                             style: textMedium.copyWith(
                                 color: AppColor.black, fontSize: 16.spMin)),
                         WidgetSpan(
                           child: SizedBox(width: 10.w),
                         ),
                         TextSpan(
-                            text: '\$159.99',
+                            text: '\$${product.realPrice}',
                             style: textRegular.copyWith(
                               decoration: TextDecoration.lineThrough,
                                 color: AppColor.grey, fontSize: 16.spMin)),
@@ -531,7 +531,7 @@ Widget _buildImageview() {
                           child: SizedBox(width: 8.w),
                         ),
                         TextSpan(
-                            text: '(20% Off)',
+                            text: '(${product.discount} % Off)',
                             style: textRegular.copyWith(
                                 color: AppColor.neonPink, fontSize: 12.spMin)),
                       ],

@@ -1,89 +1,187 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:trendify/ui/auth/store/auth_store.dart';
 import '../../../generated/assets.dart';
 import '../../../router/app_router.dart';
 import '../../../values/colors.dart';
 import '../../../values/style.dart';
 import '../../../widget/app_image.dart';
-import '../../auth/store/auth_store.dart';
 import '../home_page.dart';
 
 class ProductListWidget extends StatefulWidget {
   @override
   _ProductListWidgetState createState() => _ProductListWidgetState();
 }
-
 class _ProductListWidgetState extends State<ProductListWidget> {
-  List<String> favoritesPageImages = [
-    Assets.imageFavproductone,
-    Assets.imageFavproducttwo,
-    Assets.imageFavproductthree,
-    Assets.imageFavproductfour,
-    Assets.imageFavproductone,
-    Assets.imageFavproducttwo,
-    Assets.imageFavproductthree,
-    Assets.imageFavproductfour,
-  ];
 
   @override
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    authStore.favouriteList();
+    print(authStore.favoriteProducts.length);
+  }
+  @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: favoritesPageImages.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisExtent: 272.h,
-        crossAxisSpacing: 2,
-        mainAxisSpacing: 2,
-        crossAxisCount: 2,
-      ),
-      shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      clipBehavior: Clip.none,
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
-      itemBuilder: (context, index) {
-        return _buildFavouritesProductCard(index);
-      },
+
+    return Observer(
+      builder: (context) {
+        return GridView.builder(
+          itemCount: authStore.favoriteProducts.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            mainAxisExtent: 290.h,
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,
+            crossAxisCount: 2,
+          ),
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          clipBehavior: Clip.none,
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 2.h),
+          itemBuilder: (context, index) {
+            print(authStore.favoriteProducts[index].favorite.value);
+            return  authStore.favoriteProducts[index].favorite.value==true?_buildFavouritesProductCard(index):null;
+          },
+        );
+      }
     );
   }
 
   Widget _buildFavouritesProductCard(int index) {
-    return GestureDetector(
-      onTap: () {
-        appRouter.push(ProductDetailsRoute());
-      },
-      child: Container(
-        color: Colors.white,
-        padding: EdgeInsets.all(8.r),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.topLeft,
+    var data =  authStore.favoriteProducts[index];
+    return Observer(
+      builder: (context) {
+        return GestureDetector(
+          onTap: () {
+            appRouter.push(ProductDetailsRoute(product: data)).then((value) => authStore.favouriteList(),);
+          },
+          child: Container(
+            color: Colors.white,
+            padding: EdgeInsets.all(8.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppImage(
-                  assets: favoritesPageImages[index],
-                  height: 139.h,
-                  width: 169.w,
-                  radius: 5.r,
-                  placeHolder: buildShimmerEffect(
-                      radius: 5.r, width: 134.w, height: 169.h),
+                Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.topLeft,
+                  children: [
+                    AppImage(
+                      assets: data.imagePath,
+                      height: 180.h,
+                      width: 169.w,
+                      radius: 5.r,
+                      boxFit: BoxFit.fill,
+                      placeHolder: buildShimmerEffect(
+                          radius: 5.r, width: 169.w, height: 180.h),
+                    ),
+                    data.discount==null?SizedBox.shrink():_buildDiscountTag(),
+                    ValueListenableBuilder(
+                      valueListenable: data.favorite,
+                      builder: (context, value, child) => Positioned(
+                        top: 5.h,
+                        right: 10.w,
+                        child: InkWell(
+                          onTap: () {
+                            data.favorite.value = !data.favorite.value;
+                           authStore.favouriteList();
+
+                           print(authStore.favoriteProducts.length);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8.r),
+                            decoration: BoxDecoration(
+                              color: AppColor.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: data.favorite.value
+                                ? Image(
+                              image: AssetImage(Assets.imagePinkHeart),
+                              height: 12.h,
+                              width: 12.w,
+                              fit: BoxFit.contain,
+                            )
+                                : Image(
+                              image: AssetImage(Assets.imageBlackHeart),
+                              height: 12.h,
+                              width: 12.w,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                if (index % 2 == 0) _buildDiscountTag(),
-                Positioned(
-                  top: 8,
-                  right: 10.w,
-                  child: _buildFavoriteButton(),
+                SizedBox(height: 10.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('${data.productTitle}'),
+                    SizedBox(height: 5.h),
+                    GestureDetector(
+                      onTap: () {
+                        appRouter.push(RateReviewsRoute());
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            Assets.imageStar,
+                            height: 12.h,
+                            width: 12.w,
+                            fit: BoxFit.contain,
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            "4.5",
+                            style: textMedium.copyWith(
+                                color: AppColor.black, fontSize: 12.spMin),
+                          ),
+                          Text(
+                            " | 256",
+                            style: textRegular.copyWith(
+                                color: AppColor.grey, fontSize: 12.spMin),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    _buildFreeShippingTag(),
+                    SizedBox(height: 7.h),
+                    Row(
+                      children: [
+                       data.totalDiscount==0?SizedBox.shrink():Text(
+                          "\$${(data.realPrice!-data.totalDiscount!).toStringAsFixed(2)}",
+                          style:
+                          textMedium.copyWith(color: AppColor.black, fontSize: 12.spMin),
+                        ),
+                        SizedBox(width: 5.w),
+                        Text(
+                          "\$${data.realPrice!}",
+                          style: textRegular.copyWith(
+                            decoration: TextDecoration.lineThrough,
+                            color: AppColor.grey,
+                            fontSize: 12.spMin,
+                          ),
+                        ),
+                        Spacer(),
+                        SvgPicture.asset(Assets.imageAddTocart),
+                      ],
+                    ),
+                  ],
                 ),
+              ),
               ],
             ),
-            SizedBox(height: 10.h),
-            _buildProductDetails(),
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 
@@ -108,32 +206,7 @@ class _ProductListWidgetState extends State<ProductListWidget> {
     );
   }
 
-  Widget _buildFavoriteButton() {
-    return InkWell(
-      onTap: () {
-        authStore.setIsFavorite();
-      },
-      child: Observer(builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(8.r),
-          decoration: const BoxDecoration(
-            color: AppColor.mercury,
-            shape: BoxShape.circle,
-          ),
-          child: Image.asset(
-            authStore.isFavorite
-                ? Assets.imageBlackHeart
-                : Assets.imagePinkHeart,
-            height: 12.h,
-            width: 12.w,
-            fit: BoxFit.contain,
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildProductDetails() {
+  Widget _buildProductDetails(var data) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.r),
       child: Column(
@@ -170,7 +243,6 @@ class _ProductListWidgetState extends State<ProductListWidget> {
           SizedBox(height: 8.h),
           _buildFreeShippingTag(),
           SizedBox(height: 7.h),
-          _buildPriceAndCart(),
         ],
       ),
     );
@@ -189,27 +261,5 @@ class _ProductListWidgetState extends State<ProductListWidget> {
       ),
     );
   }
-
-  Widget _buildPriceAndCart() {
-    return Row(
-      children: [
-        Text(
-          "\$119.99",
-          style:
-          textMedium.copyWith(color: AppColor.black, fontSize: 12.spMin),
-        ),
-        SizedBox(width: 5.w),
-        Text(
-          "\$159.99",
-          style: textRegular.copyWith(
-            decoration: TextDecoration.lineThrough,
-            color: AppColor.grey,
-            fontSize: 12.spMin,
-          ),
-        ),
-        Spacer(),
-        SvgPicture.asset(Assets.imageAddTocart),
-      ],
-    );
-  }
+  
 }

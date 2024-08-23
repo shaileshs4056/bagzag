@@ -105,6 +105,38 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     });
   }
 
+  late final _$productsListAtom =
+      Atom(name: '_AuthStoreBase.productsList', context: context);
+
+  @override
+  ObservableList<Product> get productsList {
+    _$productsListAtom.reportRead();
+    return super.productsList;
+  }
+
+  @override
+  set productsList(ObservableList<Product> value) {
+    _$productsListAtom.reportWrite(value, super.productsList, () {
+      super.productsList = value;
+    });
+  }
+
+  late final _$favoriteProductsAtom =
+      Atom(name: '_AuthStoreBase.favoriteProducts', context: context);
+
+  @override
+  ObservableList<Product> get favoriteProducts {
+    _$favoriteProductsAtom.reportRead();
+    return super.favoriteProducts;
+  }
+
+  @override
+  set favoriteProducts(ObservableList<Product> value) {
+    _$favoriteProductsAtom.reportWrite(value, super.favoriteProducts, () {
+      super.favoriteProducts = value;
+    });
+  }
+
   late final _$loginAsyncAction =
       AsyncAction('_AuthStoreBase.login', context: context);
 
@@ -169,6 +201,28 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   }
 
   @override
+  void favouriteList() {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+        name: '_AuthStoreBase.favouriteList');
+    try {
+      return super.favouriteList();
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void initializeProducts() {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+        name: '_AuthStoreBase.initializeProducts');
+    try {
+      return super.initializeProducts();
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 loginResponse: ${loginResponse},
@@ -176,7 +230,9 @@ logoutResponse: ${logoutResponse},
 errorMessage: ${errorMessage},
 selectedIndex: ${selectedIndex},
 isFavorite: ${isFavorite},
-isCheck: ${isCheck}
+isCheck: ${isCheck},
+productsList: ${productsList},
+favoriteProducts: ${favoriteProducts}
     ''';
   }
 }

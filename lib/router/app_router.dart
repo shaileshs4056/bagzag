@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 
+import 'package:trendify/data/model/response/product_details_responce.dart';
 import 'package:trendify/ui/auth/login/ui/otp_page.dart';
 import 'package:trendify/ui/home/categories_detailes.dart';
 import 'package:trendify/ui/home/notifications_page.dart';
@@ -18,7 +20,6 @@ import '../ui/home/favorites_page.dart';
 import '../ui/home/home_page.dart';
 import '../ui/splash/splash_page.dart';
 import '../ui/home/browse_categories.dart';
-import '../ui/home/product_details.dart';
 part 'app_router.gr.dart';
 
 @AutoRouterConfig(

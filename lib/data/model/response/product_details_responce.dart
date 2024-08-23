@@ -4,9 +4,8 @@ class Product {
   final double? discount; // Discount in percentage (nullable)
   final ValueNotifier<bool> favorite;
   final String? productTitle;
-  final double? totalDiscount;
+  final num? totalDiscount;
   final String? imagePath;
-  final double? afterDiscountPrice;
   final double? realPrice;
 
   Product({
@@ -15,7 +14,6 @@ class Product {
     this.productTitle,
     this.totalDiscount,
     this.imagePath,
-    this.afterDiscountPrice,
     this.realPrice,
   });
 }

@@ -72,6 +72,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     showLoading = ValueNotifier<bool>(false);
+    authStore.initializeProducts();
   }
 
   @override
@@ -179,11 +180,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             15.verticalSpace,
             categoriesSection(image),
             15.verticalSpace,
-            bestsellerProductsSection(productsList),
+            bestsellerProductsSection(authStore.productsList),
             20.verticalSpace,
             recentlyViewedCustomStack(),
             buyersMostLovedSection(),
-            findThingsYoullLoveSection(bestSellerImageUrls)
+            findThingsYoullLoveSection(authStore.productsList)
           ],
         ),
       ),
@@ -370,7 +371,7 @@ Widget bestsellerProductsSection(List<Product> productsList) {
               title: productsList[index].productTitle,
               discountPercentage: productsList[index].discount,
               isFavorite: productsList[index].favorite,
-              currentPrice: productsList[index].afterDiscountPrice,
+              totalDiscount: productsList[index].totalDiscount,
               originalPrice: productsList[index].realPrice,
             );
           },
@@ -776,7 +777,7 @@ Widget buyersMostLovedSection() {
 }
 
 
-Widget findThingsYoullLoveSection(List<String> imageUrls) {
+Widget findThingsYoullLoveSection(List<Product> productsList) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -807,20 +808,21 @@ Widget findThingsYoullLoveSection(List<String> imageUrls) {
         child: ListView.separated(
           padding: EdgeInsets.symmetric(horizontal: 15.r),
           scrollDirection: Axis.horizontal,
-          itemCount: productsList.length,
+          itemCount:  productsList.length,
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(
                 width: 15.w); // Adjust the width of the separator as needed
           },
           itemBuilder: (BuildContext context, int index) {
-            return BestsellerStackWidget(
+           return BestsellerStackWidget(
               imagePath: productsList[index].imagePath,
               title: productsList[index].productTitle,
               discountPercentage: productsList[index].discount,
               isFavorite: productsList[index].favorite,
-              currentPrice: productsList[index].afterDiscountPrice,
+              totalDiscount: productsList[index].totalDiscount,
               originalPrice: productsList[index].realPrice,
             );
+
 
           },
         ),

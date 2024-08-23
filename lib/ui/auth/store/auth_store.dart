@@ -21,7 +21,10 @@ import '../../../core/exceptions/app_exceptions.dart';
 import '../../../core/exceptions/dio_exception_util.dart';
 import '../../../core/locator/locator.dart';
 import '../../../data/model/request/login_request_model.dart';
+import '../../../data/model/response/product_details_responce.dart';
 import '../../../data/model/response/user_profile_response.dart';
+import '../../../generated/assets.dart';
+import '../../home/widget/product_details_widget.dart';
 
 part 'auth_store.g.dart';
 
@@ -45,6 +48,13 @@ abstract class _AuthStoreBase with Store {
   @observable
   bool isCheck = false;
 
+  @observable
+  ObservableList<Product> productsList = ObservableList<Product>();
+
+  @observable
+  ObservableList<Product> favoriteProducts = ObservableList();
+
+
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
   _AuthStoreBase();
@@ -67,6 +77,60 @@ abstract class _AuthStoreBase with Store {
   String getCurrentTime() {
     return DateFormat('hh:mm a').format(DateTime.now());
   }
+
+  @action
+  void favouriteList() {
+    favoriteProducts = ObservableList.of(
+        productsList.where((product) => product.favorite.value == true).toList()
+    );
+  }
+
+  @action
+  void initializeProducts() {
+    productsList = ObservableList.of([
+      Product(
+        discount: 10.5,
+        favorite: ValueNotifier<bool>(true),
+        productTitle: 'Loose Textured T-Shirt',
+        totalDiscount: 15.99,
+        imagePath: Assets.imageBestsellerimagetwo,
+        realPrice: 150.98,
+      ),
+      Product(
+        discount: 25.0,
+        favorite: ValueNotifier<bool>(true),
+        productTitle: "Loose Textured T-Shirt",
+        totalDiscount: 50.0,
+        imagePath: Assets.imageBestsellerimageone,
+        realPrice: 499.99,
+      ),
+      Product(
+        discount: 10.00, // No discount applied
+        favorite: ValueNotifier<bool>(true),
+        productTitle: 'Loose Textured T-Shirt',
+        totalDiscount: 3,
+        imagePath: Assets.imageBestsellerimageone, // Price remains unchanged
+        realPrice: 29.99,
+      ),
+      Product(
+        discount: null, // No discount applied
+        favorite: ValueNotifier<bool>(true),
+        productTitle: 'Loose Textured T-Shirt',
+        totalDiscount: 3,
+        imagePath: Assets.imageBestsellerimageone, // Price remains unchanged
+        realPrice: 150,
+      ),
+      Product(
+        discount: null, // No discount applied
+        favorite: ValueNotifier<bool>(true),
+        productTitle: 'Loose Textured T-Shirt',
+        totalDiscount: 0,
+        imagePath: Assets.imageFavproductone,
+        realPrice: 00,
+      ),
+    ]);
+  }
+
   @action
   Future login(LoginRequestModel request) async {
     try {
